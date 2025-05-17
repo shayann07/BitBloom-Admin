@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.bitbloom.bitbloomadmin.UI.DashboardFragment"
+        android:label="DashboardFragment" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_annoucementFragment"
+            app:destination="@id/annoucementFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_planFragment"
+            app:destination="@id/planFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_withdrawFragment"
+            app:destination="@id/withdrawFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/annoucementFragment"
+        android:name="com.bitbloom.bitbloomadmin.UI.AnnoucementFragment"
+        android:label="fragment_annoucement"
+        tools:layout="@layout/fragment_annoucement" />
+    <fragment
+        android:id="@+id/planFragment"
+        android:name="com.bitbloom.bitbloomadmin.UI.PlanFragment"
+        android:label="fragment_plan"
+        tools:layout="@layout/fragment_plan" />
+    <fragment
+        android:id="@+id/withdrawFragment"
+        android:name="com.bitbloom.bitbloomadmin.WithdrawFragment"
+        android:label="fragment_withdraw"
+        tools:layout="@layout/fragment_withdraw" />
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.bitbloom.bitbloomadmin.UI.UsersFragment"
+        android:label="fragment_users"
+        tools:layout="@layout/fragment_users" />
+</navigation>
