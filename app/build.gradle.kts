@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -34,6 +35,18 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/INDEX.LIST",
+                "META-INF/DEPENDENCIES"
+            )
+        }
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -43,7 +56,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.firestore)
     implementation(platform(libs.firebase.bom))
     implementation(libs.gson)
     implementation(libs.androidx.gridlayout)
@@ -63,6 +75,9 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.auth)
     ksp(libs.androidx.room.compiler)
+
+    implementation("io.grpc:grpc-okhttp:1.56.1")
+
 
     // UI
     implementation(libs.lottie)
@@ -108,4 +123,12 @@ dependencies {
     implementation(libs.firebase.analytics.ktx)
     implementation(libs.firebase.config)
     implementation(libs.firebase.config.ktx)
+
+
+    implementation(libs.firebase.firestore)
+// Explicitly add gRPC core dependencies used by Firestore (fixes InternalGlobalInterceptors issue)
+    implementation("io.grpc:grpc-okhttp:1.57.2")
+    implementation("io.grpc:grpc-protobuf-lite:1.57.2")
+    implementation("io.grpc:grpc-stub:1.57.2")
+    implementation("io.grpc:grpc-core:1.57.2")
 }

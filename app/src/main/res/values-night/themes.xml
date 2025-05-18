@@ -1,7 +1,57 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.BitBloomAdmin" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+
+        <!-- Background and surface colors. -->
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+
+        <!-- Error colors. -->
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+
+        <!-- Toolbar style -->
+        <item name="toolbarStyle">@style/Widget.BitBloomAdmin.Toolbar</item>
+
+        <!-- Bottom navigation styling -->
+        <item name="bottomNavigationStyle">@style/Widget.BitBloomAdmin.BottomNav</item>
+
+        <!-- Text appearances -->
+        <item name="textAppearanceBody1">@style/TextAppearance.BitBloomAdmin.Body1</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.BitBloomAdmin.Headline6</item>
     </style>
+
+    <!-- Toolbar widget -->
+    <style name="Widget.BitBloomAdmin.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/colorSurface</item>
+        <item name="titleTextAppearance">@style/TextAppearance.BitBloomAdmin.ToolbarTitle</item>
+    </style>
+
+    <style name="TextAppearance.BitBloomAdmin.ToolbarTitle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <!-- BottomNavigationView widget -->
+    <style name="Widget.BitBloomAdmin.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/bottom_nav_color_state</item>
+        <item name="itemTextColor">@color/bottom_nav_color_state</item>
+    </style>
+
+    <!-- Text appearances for cards and labels -->
+    <style name="TextAppearance.BitBloomAdmin.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="TextAppearance.BitBloomAdmin.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/textSecondary</item>
+    </style>
+
 </resources>
