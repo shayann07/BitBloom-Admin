@@ -51,15 +51,29 @@ android {
 
 dependencies {
 
+    // Core AndroidX + UI
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.gson)
     implementation(libs.androidx.gridlayout)
+    implementation(libs.androidx.cardview)
 
+    // Firebase BOM (manages all Firebase versions)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.config.ktx)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.firestore)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -67,68 +81,40 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
 
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.google.firebase.firestore)
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.messaging)
-    implementation(libs.firebase.auth)
-    ksp(libs.androidx.room.compiler)
+    // ViewModel + LiveData
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    implementation("io.grpc:grpc-okhttp:1.56.1")
-
-
-    // UI
+    // Other Libraries
     implementation(libs.lottie)
     implementation(libs.glide)
-    implementation(libs.androidx.cardview)
+    implementation(libs.circleimageview)
+    implementation(libs.google.auth.library.oauth2.http)
+    implementation(libs.ultra.ptr)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
+    implementation(libs.picasso)
+    implementation(libs.volley)
+    implementation(libs.coinpayments.java)
+    implementation(libs.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // ViewModel KTX (for viewModels() delegate)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-    // LiveData KTX (for LiveData observables)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-    // Navigation
+    // Additional Navigation (explicit version, optional)
     val nav_version = "2.8.5"
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
-    implementation ("com.airbnb.android:lottie:6.5.2")
 
-    implementation(libs.circleimageview)
-    implementation(libs.google.auth.library.oauth2.http)
-    implementation(libs.ultra.ptr)
-    implementation(libs.navigation.fragment.ktx)
-    implementation(libs.navigation.ui.ktx)
-    implementation(libs.gson)
-    implementation(libs.okhttp)
-    implementation(libs.picasso)
-    implementation(libs.volley)
-    implementation(libs.coinpayments.java)
-    implementation(libs.okhttp)
-    implementation(libs.glide)
-    implementation(libs.core)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.firebase.storage)
-    implementation(platform(libs.firebase.bom.v3273))
-    implementation(libs.firebase.analytics.ktx)
-    implementation(libs.firebase.config)
-    implementation(libs.firebase.config.ktx)
-
-
-    implementation(libs.firebase.firestore)
-// Explicitly add gRPC core dependencies used by Firestore (fixes InternalGlobalInterceptors issue)
-    implementation("io.grpc:grpc-okhttp:1.57.2")
-    implementation("io.grpc:grpc-protobuf-lite:1.57.2")
-    implementation("io.grpc:grpc-stub:1.57.2")
-    implementation("io.grpc:grpc-core:1.57.2")
+    // ✅ gRPC Dependencies for Firestore (fixes InternalGlobalInterceptors issue)
+    implementation(libs.grpc.okhttp)
+    implementation(libs.grpc.core)
+    implementation(libs.grpc.stub)
+    implementation(libs.grpc.protobuf.lite)
 }
