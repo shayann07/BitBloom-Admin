@@ -1,60 +1,76 @@
-package com.bitbloom.bitbloomadmin.UI
+package com.example.bitbloomadmin.UI
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bitbloom.bitbloomadmin.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bitbloom.bitbloomadmin.adapter.UserListAdapter
+import com.example.bitbloomadmin.Data.local.AppDatabase
+import com.example.bitbloomadmin.Data.remote.FirebaseHelper
+import com.example.bitbloomadmin.R
+import com.example.bitbloomadmin.Repository.UserRepository
+import com.example.bitbloomadmin.Viewmodel.UserViewModel
+import com.example.bitbloomadmin.Viewmodel.UserViewModelFactory
+import com.example.bitbloomadmin.databinding.FragmentUsersBinding
+import com.example.bitbloomadmin.models.UserWithAccount
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UsersFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UsersFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentUsersBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var adapter: UserListAdapter
+    private lateinit var viewModel: UserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_users, container, false)
+    ): View {
+        val appContext = requireContext().applicationContext
+        val dao = AppDatabase.getDatabase(appContext).userDao()
+        val repository = UserRepository(FirebaseHelper(requireContext()), dao)
+        val factory = UserViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
+        _binding = FragmentUsersBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UsersFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UsersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = UserListAdapter(emptyList(), object : UserListAdapter.ClickHandler {
+            override fun onClick(userAccountItem: UserWithAccount) {
+                val bundle = Bundle().apply {
+                    putString("userId", userAccountItem.userId)
                 }
+                findNavController().navigate(R.id.userProfileFragment, bundle)
             }
+
+            override fun onBlock(userAccountItem: UserWithAccount) {
+                // Optional: block logic
+            }
+        })
+
+        binding.recyclerUserList.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerUserList.adapter = adapter
+
+        // Collect data from ViewModel
+        lifecycleScope.launch {
+            viewModel.usersWithAccounts.collect { userList ->
+                adapter.updateData(userList)
+            }
+        }
+        viewModel.syncNow()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
