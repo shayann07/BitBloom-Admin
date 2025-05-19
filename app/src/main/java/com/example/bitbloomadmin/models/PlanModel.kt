@@ -1,0 +1,21 @@
+package com.example.bitbloomadmin.models
+
+data class PlanModel(
+    val name: String = "",
+    val minInvestment: Double = 0.0,
+    val durationDays: Int = 0,
+    val percentage: Double = 0.0,
+    val directProfit: Double = 0.0,
+    val updatedAt: Any? = null // Replace with correct type if known
+) {
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "name" to name,
+            "minInvestment" to minInvestment,
+            "durationDays" to durationDays,
+            "percentage" to percentage,
+            "directProfit" to directProfit,
+            "updatedAt" to updatedAt
+        )
+    }
+}
