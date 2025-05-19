@@ -6,6 +6,8 @@ import com.example.bitbloomadmin.models.AccountModel
 import com.example.bitbloomadmin.models.EarningsModel
 import com.example.bitbloomadmin.models.InvestmentModel
 import com.example.bitbloomadmin.models.UserModel
+import com.example.bitbloomadmin.models.WithdrawModel
+import com.example.bitbloomadmin.models.WithdrawWithUserName
 import com.google.firebase.Timestamp
 
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,8 +28,6 @@ class FirebaseHelper(context: Context) {
                 val user = doc.toObject(UserModel::class.java)
                 user?.copy(id = doc.getString("id") ?: doc.getString("uid") ?: doc.id)
             }
-
-            println("✅ [FirebaseHelper] Processed ${users.size} valid users")
             users
         } catch (e: Exception) {
             println("❌ [FirebaseHelper] Failed to fetch users: ${e.message}")
@@ -35,18 +35,16 @@ class FirebaseHelper(context: Context) {
         }
     }
 
-
     suspend fun fetchAccounts(): List<AccountModel> {
         return try {
             val snapshot = accountsCollection.get().await()
-            Log.d("FirebaseHelperSnapshot", "Accounts count: ${snapshot.size()}")
             snapshot.documents.mapNotNull { doc ->
                 val earnings = doc.get("earnings") as? Map<String, Number> ?: emptyMap()
                 val investment = doc.get("investment") as? Map<String, Number> ?: emptyMap()
 
                 AccountModel(
                     accountId = doc.id,
-                    userId = doc.getString("user_id") ?: "",  // ✅ match snake_case field
+                    userId = doc.getString("user_id") ?: "",
                     createdAt = doc.getTimestamp("createdAt") ?: Timestamp.now(),
                     status = doc.getString("status") ?: "",
                     investment = InvestmentModel(
@@ -69,6 +67,39 @@ class FirebaseHelper(context: Context) {
             }
         } catch (e: Exception) {
             Log.e("FirebaseHelper", "Error fetching accounts", e)
+            emptyList()
+        }
+    }
+
+    suspend fun fetchWithdrawRequestsWithUserNames(): List<WithdrawWithUserName> {
+        return try {
+            val users = fetchUsers()
+            val userMap = users.associateBy { it.id }
+
+            val snapshot = firestore.collection("withdraw_requests").get().await()
+
+            snapshot.documents.mapNotNull { doc ->
+                val userId = doc.getString("userId") ?: return@mapNotNull null
+                val userName = userMap[userId]?.name ?: "Unknown"
+
+                val withdrawModel = WithdrawModel(
+                    address = doc.getString("address") ?: "",
+                    amount = doc.getDouble("amount") ?: 0.0,
+                    balanceUpdated = doc.getBoolean("balanceUpdated") ?: false,
+                    status = doc.getString("status") ?: "",
+                    timestamp = doc.getTimestamp("timestamp") ?: Timestamp.now(),
+                    transactionId = doc.getString("transactionId") ?: doc.id,
+                    type = doc.getString("type") ?: "withdraw",
+                    userId = userId
+                )
+
+                WithdrawWithUserName(
+                    withdraw = withdrawModel,
+                    userName = userName
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseHelper", "Error fetching withdraw transactions", e)
             emptyList()
         }
     }

@@ -16,7 +16,6 @@ class UserRepository(
         val users = firebaseHelper.fetchUsers()
         val accounts = firebaseHelper.fetchAccounts()
 
-        println("🧹 [Repo] Clearing old data")
         userDao.clearAllUsers()
         userDao.clearAllAccounts()
 

@@ -85,6 +85,7 @@ class UsersFragment : Fragment() {
                 utils.endLoadingAnimation() // ✅ Moved inside collect
             }
         }
+        viewModel.syncNow()
     }
     override fun onDestroyView() {
         super.onDestroyView()
