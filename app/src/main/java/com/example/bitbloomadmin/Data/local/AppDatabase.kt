@@ -4,13 +4,16 @@ package com.example.bitbloomadmin.Data.local
 import android.content.Context
 import androidx.room.*
 import com.bitbloom.bitbloomadmin.Dao.UserDao
+import com.bitbloom.bitbloomadmin.Dao.WithdrawDao
 import com.example.bitbloomadmin.models.AccountModel
 import com.example.bitbloomadmin.models.UserModel
 import com.bitbloom.bitbloomadmin.utils.TimestampConverter
+import com.example.bitbloomadmin.models.WithdrawModel
+import com.example.bitbloomadmin.models.WithdrawWithUserName
 
 
 @Database(
-    entities = [UserModel::class, AccountModel::class],
+    entities = [UserModel::class, AccountModel::class , WithdrawModel::class , WithdrawWithUserName::class],
     version = 1,
     exportSchema = false
 )
@@ -18,6 +21,7 @@ import com.bitbloom.bitbloomadmin.utils.TimestampConverter
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
+    abstract fun withdrawDao(): WithdrawDao
 
     companion object {
         @Volatile

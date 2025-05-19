@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.bitbloomadmin.models.AccountModel
 import com.example.bitbloomadmin.models.UserModel
+import com.example.bitbloomadmin.models.UserWithAccount
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,6 +23,9 @@ interface UserDao {
 
     @Query("SELECT * FROM account_table")
     fun getAllAccounts(): Flow<List<AccountModel>>
+
+
+
 
     @Query("DELETE FROM user_table")
     suspend fun clearAllUsers()
