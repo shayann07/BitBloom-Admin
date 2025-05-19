@@ -29,4 +29,7 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
             repository.syncFromFirebase()
         }
     }
+    fun addAnnouncement(announcement: AnnouncementModel) {
+        repository.addAnnouncement(announcement)
+    }
 }

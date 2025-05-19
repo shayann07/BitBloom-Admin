@@ -3,6 +3,7 @@ package com.example.bitbloomadmin.Data.remote
 import android.content.Context
 import android.util.Log
 import com.example.bitbloomadmin.models.AccountModel
+import com.example.bitbloomadmin.models.AnnouncementModel
 import com.example.bitbloomadmin.models.EarningsModel
 import com.example.bitbloomadmin.models.InvestmentModel
 import com.example.bitbloomadmin.models.UserModel
@@ -102,5 +103,16 @@ class FirebaseHelper(context: Context) {
             Log.e("FirebaseHelper", "Error fetching withdraw transactions", e)
             emptyList()
         }
+    }
+    fun addAnnouncement(announcement: AnnouncementModel) {
+        firestore.collection("announcements")
+            .add(announcement)
+            .addOnSuccessListener {
+                val documentId = it.id
+                firestore.collection("announcements").document(documentId).update("id",documentId)
+            }
+            .addOnFailureListener {
+                it.localizedMessage
+            }
     }
 }
