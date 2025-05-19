@@ -3,8 +3,7 @@ package com.example.bitbloomadmin
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.bitbloomadmin.databinding.ActivityMainBinding
@@ -22,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         // Inflate with ViewBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val navController = findNavController(R.id.nav_host_fragment)
 
         binding.bottomNav.setupWithNavController(navController)
@@ -33,22 +33,27 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.dashboardFragment)
                     true
                 }
+
                 R.id.nav_users -> {
                     navController.navigate(R.id.usersFragment)
                     true
                 }
+
                 R.id.nav_plans -> {
                     navController.navigate(R.id.planFragment)
                     true
                 }
+
                 R.id.nav_reports -> {
                     navController.navigate(R.id.annoucementFragment)
                     true
                 }
+
                 R.id.nav_withdrawals -> {
                     navController.navigate(R.id.withdrawFragment)
                     true
                 }
+
                 else -> false
             }
         }
