@@ -6,12 +6,20 @@ import com.example.bitbloomadmin.models.AccountModel
 import com.example.bitbloomadmin.models.AnnouncementModel
 import com.example.bitbloomadmin.models.EarningsModel
 import com.example.bitbloomadmin.models.InvestmentModel
+import com.example.bitbloomadmin.models.PlanModel
 import com.example.bitbloomadmin.models.UserModel
 import com.example.bitbloomadmin.models.WithdrawModel
 import com.example.bitbloomadmin.models.WithdrawWithUserName
+import com.example.bitbloomadmin.utils.Status
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class FirebaseHelper(context: Context) {
@@ -115,4 +123,83 @@ class FirebaseHelper(context: Context) {
                 it.localizedMessage
             }
     }
+
+    suspend fun addPlan(planModel: PlanModel): Status {
+        return try {
+            // Check if a plan with the same name exists
+            val plansSnapshot = firestore.collection("plans").get().await()
+            val isPlanNameExists = plansSnapshot.documents.any {
+                it.getString("name") == planModel.name
+            }
+            if (isPlanNameExists) return Status.PLAN_EXISTS
+
+            // Set updatedAt to server timestamp
+            val planData = planModel.copy(updatedAt = FieldValue.serverTimestamp()).toMap()
+
+            // Add the plan
+            firestore.collection("plans").add(planData).await()
+
+            Log.d("FirebaseHelper", "✅ Plan added successfully!")
+            Status.SUCCESS
+        } catch (e: Exception) {
+            Log.e("FirebaseHelper", "❌ Error adding plan: ${e.message}")
+            Status.ERROR
+        }
+    }
+    suspend fun updatePlan(planModel: PlanModel, planDocId: String): Status {
+        return try {
+            // Check for duplicate plan name, excluding this planDocId
+            val plansSnapshot = firestore.collection("plans")
+                .whereEqualTo("name", planModel.name)
+                .get()
+                .await()
+
+            // If more than 1 doc with the same name (including this one), it's a duplicate
+            val isDuplicateName = plansSnapshot.documents.count { it.id != planDocId } > 0
+            Log.d("FirebaseHelper", "isDuplicateName: $isDuplicateName")
+
+            if (isDuplicateName) return Status.PLAN_EXISTS
+
+            // Update existing plan, set updatedAt to server timestamp
+            val planData = planModel.copy(updatedAt = FieldValue.serverTimestamp()).toMap()
+
+            firestore.collection("plans")
+                .document(planDocId)
+                .set(planData, SetOptions.merge())
+                .await()
+
+            Log.d("FirebaseHelper", "✅ Plan updated successfully!")
+            Status.SUCCESS
+        } catch (e: Exception) {
+            Log.e("FirebaseHelper", "❌ Error updating plan: $e")
+            Status.ERROR
+        }
+    }
+    fun getAllPlans(): Flow<List<PlanModel>> = callbackFlow {
+        val listenerRegistration: ListenerRegistration = FirebaseFirestore.getInstance()
+            .collection("plans")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val plans = snapshot?.documents?.mapNotNull { it.toObject(PlanModel::class.java) } ?: emptyList()
+                trySend(plans).isSuccess
+            }
+        awaitClose { listenerRegistration.remove() }
+    }
+    suspend fun deletePlan(planDocId: String): Status {
+        return try {
+            firestore.collection("plans")
+                .document(planDocId)
+                .delete()
+                .await()
+            Log.d("FirebaseHelper", "✅ Plan deleted successfully!")
+            Status.SUCCESS
+        } catch (e: Exception) {
+            Log.e("FirebaseHelper", "❌ Error deleting plan: ${e.message}")
+            Status.ERROR
+        }
+    }
+
 }

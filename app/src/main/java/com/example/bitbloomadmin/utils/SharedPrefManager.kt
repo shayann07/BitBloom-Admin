@@ -1,10 +1,11 @@
-package com.bitbloom.bitbloomadmin.utils
+package com.example.bitbloomadmin.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.bitbloomadmin.models.NotificationItem
 import com.example.bitbloomadmin.models.UserModel
-import com.example.bitbloomadmin.utils.Constants
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 class SharedPrefManager(context: Context) {
@@ -46,6 +47,16 @@ class SharedPrefManager(context: Context) {
     }
 
 
+    fun saveNotifications(list: List<NotificationItem>) {
+        val json = gson.toJson(list)
+        editor.putString("notification_list", json)
+        editor.apply()
+    }
 
+    fun getNotifications(): List<NotificationItem> {
+        val json = sharedPref.getString("notification_list", null)
+        val type = object : TypeToken<List<NotificationItem>>() {}.type
+        return gson.fromJson(json, type) ?: emptyList()
+    }
 
 }

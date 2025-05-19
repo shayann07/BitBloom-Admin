@@ -32,4 +32,5 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
     fun addAnnouncement(announcement: AnnouncementModel) {
         repository.addAnnouncement(announcement)
     }
+
 }
