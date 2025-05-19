@@ -22,6 +22,12 @@ interface UserDao {
 
     @Query("SELECT * FROM account_table")
     fun getAllAccounts(): Flow<List<AccountModel>>
+
+    @Query("DELETE FROM user_table")
+    suspend fun clearAllUsers()
+
+    @Query("DELETE FROM account_table")
+    suspend fun clearAllAccounts()
 }
 
 
