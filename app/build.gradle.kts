@@ -117,4 +117,6 @@ dependencies {
     implementation(libs.grpc.core)
     implementation(libs.grpc.stub)
     implementation(libs.grpc.protobuf.lite)
+
+    implementation ("com.google.code.gson:gson:2.10.1")
 }

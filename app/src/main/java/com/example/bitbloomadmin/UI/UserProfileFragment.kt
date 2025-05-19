@@ -5,56 +5,95 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import com.bitbloom.bitbloomadmin.utils.Utils
+import com.example.bitbloomadmin.Data.local.AppDatabase
+import com.example.bitbloomadmin.Data.remote.FirebaseHelper
 import com.example.bitbloomadmin.R
+import com.example.bitbloomadmin.Repository.UserRepository
+import com.example.bitbloomadmin.Viewmodel.UserViewModel
+import com.example.bitbloomadmin.Viewmodel.UserViewModelFactory
+import com.example.bitbloomadmin.databinding.FragmentUserProfileBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UserProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UserProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentUserProfileBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var userId: String
+    private lateinit var utils: Utils
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile, container, false)
-    }
+    ): View {
+        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        utils = Utils(requireContext())
+        utils.startLoadingAnimation()
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        val args = arguments
+
+        val userId = args?.getString("userId") ?: ""
+        val name = args?.getString("name") ?: ""
+        val email = args?.getString("email") ?: ""
+        val phone = args?.getString("phone") ?: ""
+        val accountId = args?.getString("accountId") ?: ""
+        val totalDeposit = args?.getDouble("totalDeposit") ?: 0.0
+        val currentBalance = args?.getDouble("currentBalance") ?: 0.0
+        val withdraw = args?.getDouble("withdraw") ?: 0.0
+        val totalEarned = args?.getDouble("totalEarned") ?: 0.0
+        val referralCode = args?.getString("referalCode") ?: "N/A"
+        val password = args?.getString("password") ?: "••••••"
+
+        val lifetimeReferralIncome = args?.getDouble("lifetime_referral_income") ?: 0.0
+        val lifetimeRoiIncome = args?.getDouble("lifetime_roi_income") ?: 0.0
+        val lifetimeTeamIncome = args?.getDouble("lifetime_team_income") ?: 0.0
+
+        // 🟢 Bind to Views
+        binding.apply {
+            uid.text = userId
+            tvName.text = name
+            tvEmail.text = email
+            tvPhone.text = phone
+            tvDeposit.text = totalDeposit.toString()
+            tvProfit.text = totalEarned.toString()
+            tvReferral.text = referralCode
+            tvPassword.text = password
+
+            tvLifetimeReferral.text = lifetimeReferralIncome.toString()
+            tvLifetimeRoi.text = lifetimeRoiIncome.toString()
+            tvLifetimeTeam.text = lifetimeTeamIncome.toString()
+        }
+
+
+        // 🟢 Bind to Views
+        binding.apply {
+        uid.text = userId
+        tvName.text = name
+        tvEmail.text = email
+        tvPhone.text = phone
+        tvDeposit.text = totalDeposit.toString()
+        tvProfit.text = totalEarned.toString()
+        tvReferral.text = referralCode
+        tvPassword.text = password
+        tvLifetimeReferral.text = lifetimeReferralIncome.toString()
+        tvLifetimeRoi.text = lifetimeRoiIncome.toString()
+        tvLifetimeTeam.text = lifetimeTeamIncome.toString()
     }
+        utils.endLoadingAnimation()
+    return binding.root
+}
+
+override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+}
 }
