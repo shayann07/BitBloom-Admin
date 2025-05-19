@@ -1,4 +1,4 @@
-package com.bitbloom.bitbloomadmin.Dao
+package com.example.bitbloomadmin.Dao
 
 import androidx.room.*
 import com.example.bitbloomadmin.models.WithdrawModel
