@@ -2,6 +2,7 @@ package com.example.bitbloomadmin.Repository
 
 import com.example.bitbloomadmin.Dao.UserDao
 import com.example.bitbloomadmin.Data.remote.FirebaseHelper
+import com.example.bitbloomadmin.models.AnnouncementModel
 import com.example.bitbloomadmin.models.UserWithAccount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -65,8 +66,9 @@ class UserRepository(
         }
     }
 
-
-
+  fun addAnnouncement(announcement: AnnouncementModel) {
+      firebaseHelper.addAnnouncement(announcement)
+  }
 
 }
 
