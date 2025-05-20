@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.example.bitbloomadmin.UI.DashboardFragment"
-        android:label="DashboardFragment" >
+        android:label="DashboardFragment">
         <action
             android:id="@+id/action_dashboardFragment_to_annoucementFragment"
             app:destination="@id/annoucementFragment" />
@@ -22,6 +22,11 @@
             android:id="@+id/action_dashboardFragment_to_usersFragment"
             app:destination="@id/usersFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.bitbloomadmin.UI.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
     <fragment
         android:id="@+id/annoucementFragment"
         android:name="com.example.bitbloomadmin.UI.AnnoucementFragment"
@@ -41,7 +46,7 @@
         android:id="@+id/usersFragment"
         android:name="com.example.bitbloomadmin.UI.UsersFragment"
         android:label="fragment_users"
-        tools:layout="@layout/fragment_users" >
+        tools:layout="@layout/fragment_users">
         <action
             android:id="@+id/action_usersFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
