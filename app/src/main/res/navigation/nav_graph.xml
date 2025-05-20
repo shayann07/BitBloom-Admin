@@ -36,7 +36,11 @@
         android:id="@+id/planFragment"
         android:name="com.example.bitbloomadmin.UI.PlanFragment"
         android:label="fragment_plan"
-        tools:layout="@layout/fragment_plan" />
+        tools:layout="@layout/fragment_plan" >
+        <action
+            android:id="@+id/action_planFragment_to_addPlanFragment"
+            app:destination="@id/addPlanFragment" />
+    </fragment>
     <fragment
         android:id="@+id/withdrawFragment"
         android:name="com.example.bitbloomadmin.UI.WithdrawFragment"
@@ -56,4 +60,10 @@
         android:name="com.example.bitbloomadmin.UI.UserProfileFragment"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/addPlanFragment"
+        android:name="com.example.bitbloomadmin.UI.AddPlanFragment"
+        android:label="fragment_add_plan"
+        tools:layout="@layout/fragment_add_plan"/>
+
 </navigation>
