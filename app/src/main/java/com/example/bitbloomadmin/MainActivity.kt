@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_reports -> {
-                    navController.navigate(R.id.annoucementFragment)
+                    navController.navigate(R.id.reportFragment)
                     true
                 }
 

@@ -8,12 +8,12 @@ import com.example.bitbloomadmin.models.EarningsModel
 import com.example.bitbloomadmin.models.InvestmentModel
 import com.example.bitbloomadmin.models.PlanModel
 import com.example.bitbloomadmin.models.UserModel
+import com.example.bitbloomadmin.models.UserPlanModel
 import com.example.bitbloomadmin.models.WithdrawModel
 import com.example.bitbloomadmin.models.WithdrawWithUserName
 import com.example.bitbloomadmin.utils.Status
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
-
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
@@ -65,7 +65,8 @@ class FirebaseHelper(context: Context) {
                         buying_profit = earnings["buying_profit"]?.toDouble() ?: 0.0,
                         current_balance = earnings["current_balance"]?.toDouble() ?: 0.0,
                         daily_profit = earnings["daily_profit"]?.toDouble() ?: 0.0,
-                        lifetime_referral_income = earnings["lifetime_referral_income"]?.toDouble() ?: 0.0,
+                        lifetime_referral_income = earnings["lifetime_referral_income"]?.toDouble()
+                            ?: 0.0,
                         lifetime_roi_income = earnings["lifetime_roi_income"]?.toDouble() ?: 0.0,
                         lifetime_team_income = earnings["lifetime_team_income"]?.toDouble() ?: 0.0,
                         referral_profit = earnings["referral_profit"]?.toDouble() ?: 0.0,
@@ -103,8 +104,7 @@ class FirebaseHelper(context: Context) {
                 )
 
                 WithdrawWithUserName(
-                    withdraw = withdrawModel,
-                    userName = userName
+                    withdraw = withdrawModel, userName = userName
                 )
             }
         } catch (e: Exception) {
@@ -112,16 +112,14 @@ class FirebaseHelper(context: Context) {
             emptyList()
         }
     }
+
     fun addAnnouncement(announcement: AnnouncementModel) {
-        firestore.collection("announcements")
-            .add(announcement)
-            .addOnSuccessListener {
-                val documentId = it.id
-                firestore.collection("announcements").document(documentId).update("id",documentId)
-            }
-            .addOnFailureListener {
-                it.localizedMessage
-            }
+        firestore.collection("announcements").add(announcement).addOnSuccessListener {
+            val documentId = it.id
+            firestore.collection("announcements").document(documentId).update("id", documentId)
+        }.addOnFailureListener {
+            it.localizedMessage
+        }
     }
 
     suspend fun addPlan(planModel: PlanModel): Status {
@@ -146,13 +144,12 @@ class FirebaseHelper(context: Context) {
             Status.ERROR
         }
     }
+
     suspend fun updatePlan(planModel: PlanModel, planDocId: String): Status {
         return try {
             // Check for duplicate plan name, excluding this planDocId
-            val plansSnapshot = firestore.collection("plans")
-                .whereEqualTo("name", planModel.name)
-                .get()
-                .await()
+            val plansSnapshot =
+                firestore.collection("plans").whereEqualTo("name", planModel.name).get().await()
 
             // If more than 1 doc with the same name (including this one), it's a duplicate
             val isDuplicateName = plansSnapshot.documents.count { it.id != planDocId } > 0
@@ -163,9 +160,7 @@ class FirebaseHelper(context: Context) {
             // Update existing plan, set updatedAt to server timestamp
             val planData = planModel.copy(updatedAt = FieldValue.serverTimestamp()).toMap()
 
-            firestore.collection("plans")
-                .document(planDocId)
-                .set(planData, SetOptions.merge())
+            firestore.collection("plans").document(planDocId).set(planData, SetOptions.merge())
                 .await()
 
             Log.d("FirebaseHelper", "✅ Plan updated successfully!")
@@ -175,25 +170,26 @@ class FirebaseHelper(context: Context) {
             Status.ERROR
         }
     }
+
     fun getAllPlans(): Flow<List<PlanModel>> = callbackFlow {
-        val listenerRegistration: ListenerRegistration = FirebaseFirestore.getInstance()
-            .collection("plans")
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    close(error)
-                    return@addSnapshotListener
+        val listenerRegistration: ListenerRegistration =
+            FirebaseFirestore.getInstance().collection("plans")
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        close(error)
+                        return@addSnapshotListener
+                    }
+                    val plans =
+                        snapshot?.documents?.mapNotNull { it.toObject(PlanModel::class.java) }
+                            ?: emptyList()
+                    trySend(plans).isSuccess
                 }
-                val plans = snapshot?.documents?.mapNotNull { it.toObject(PlanModel::class.java) } ?: emptyList()
-                trySend(plans).isSuccess
-            }
         awaitClose { listenerRegistration.remove() }
     }
+
     suspend fun deletePlan(planDocId: String): Status {
         return try {
-            firestore.collection("plans")
-                .document(planDocId)
-                .delete()
-                .await()
+            firestore.collection("plans").document(planDocId).delete().await()
             Log.d("FirebaseHelper", "✅ Plan deleted successfully!")
             Status.SUCCESS
         } catch (e: Exception) {
@@ -202,4 +198,35 @@ class FirebaseHelper(context: Context) {
         }
     }
 
+    /**
+     * Observes the userPlans collection and emits updates as a Flow of UserPlanModel lists.
+     */
+    fun getUserPlansFlow(): Flow<List<UserPlanModel>> = callbackFlow {
+        val registration =
+            firestore.collection("userPlans").addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+
+                val list = snapshot?.documents?.mapNotNull { doc ->
+                    val uid = doc.getString("user_id") ?: return@mapNotNull null
+                    val invAmt = doc.getDouble("invested_amount") ?: 0.0
+                    val status = doc.getString("PlanStatus") ?: ""
+                    val ts = doc.getTimestamp("start_date") ?: return@mapNotNull null
+
+                    UserPlanModel(
+                        id = doc.id,
+                        user_id = uid,
+                        invested_amount = invAmt,
+                        PlanStatus = status,
+                        start_date = ts
+                    )
+                } ?: emptyList()
+
+                trySend(list).isSuccess
+            }
+
+        awaitClose { registration.remove() }
+    }
 }
