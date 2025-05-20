@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.PlanFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <!-- RecyclerView for list of plans -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPlans"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp" />
 
-</FrameLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddPlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Plan"
+            android:layout_below="@id/rvPlans"
+            app:cornerRadius="18dp"
+            android:layout_margin="20dp"
+            style="@style/Widget.Material3.Button"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="24dp"/>
+    </RelativeLayout>
+
+</ScrollView>
