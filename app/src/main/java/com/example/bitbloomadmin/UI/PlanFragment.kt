@@ -45,7 +45,7 @@ class PlanFragment : Fragment(R.layout.fragment_plan) {
             }
         }
 
-        // 4) Hook up the "Add New Plan" button
+
         view.findViewById<MaterialButton>(R.id.btnAddPlan)
             .setOnClickListener {
                 // e.g. navigate to your PlanDetailFragment

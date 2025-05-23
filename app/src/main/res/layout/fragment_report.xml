@@ -126,7 +126,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/active_users"
+                            android:src="@drawable/activeusers"
                             app:tint="@android:color/white" />
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -216,7 +216,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/pending_amount"
-                            android:tint="@android:color/white"/>
+                            app:tint="@android:color/white"
+                            tools:ignore="UseAppTint" />
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -364,7 +365,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/depsoiteicon"
+                            android:src="@drawable/deposit"
                             app:tint="@android:color/white" />
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -408,7 +409,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/active_users"
+                            android:src="@drawable/activeusers"
                             app:tint="@android:color/white" />
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -630,7 +631,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/active_users"
+                            android:src="@drawable/activeusers"
                             app:tint="@android:color/white" />
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -675,7 +676,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/active_users"
+                            android:src="@drawable/activeusers"
                              app:tint="@android:color/white" />
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -736,7 +737,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/active_users"
+                            android:src="@drawable/activeusers"
                              app:tint="@android:color/white"
                             tools:ignore="UseAppTint" />
 
@@ -782,7 +783,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/active_users"
+                            android:src="@drawable/activeusers"
                             app:tint="@android:color/white" />
                         <LinearLayout
                             android:layout_width="wrap_content"
