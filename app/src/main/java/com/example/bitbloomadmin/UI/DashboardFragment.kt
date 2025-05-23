@@ -20,7 +20,7 @@ import com.example.bitbloomadmin.Viewmodel.WithdrawViewModel
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var withdrawViewModel: WithdrawViewModel

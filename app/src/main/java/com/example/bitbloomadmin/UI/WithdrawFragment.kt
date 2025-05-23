@@ -29,7 +29,7 @@ import com.example.bitbloomadmin.models.WithdrawWithUserName
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
-class WithdrawFragment : Fragment(), WithdrawAdapter.WithdrawHandler {
+class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
 
     private lateinit var binding: FragmentWithdrawBinding
     private lateinit var viewModel: WithdrawViewModel

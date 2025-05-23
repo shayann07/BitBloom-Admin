@@ -1,5 +1,6 @@
 package com.example.bitbloomadmin.notifications
 
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 class Fcm  {
+    @OptIn(DelicateCoroutinesApi::class)
     fun sendFCMNotification(targetDeviceToken: String, title: String, body: String, accessToken: String) {
         val url = "https://fcm.googleapis.com/v1/projects/aitrustledger-3fe07/messages:send" // Replace with your project ID
 

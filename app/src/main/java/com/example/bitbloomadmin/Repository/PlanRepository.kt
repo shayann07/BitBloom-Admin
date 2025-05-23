@@ -14,9 +14,9 @@ class PlanRepository(private val firebaseHelper: FirebaseHelper) {
     suspend fun addPlan(planModel: PlanModel): Status = firebaseHelper.addPlan(planModel)
 
     // Update an existing plan
-    suspend fun updatePlan(planModel: PlanModel, planDocId: String): Status =
-        firebaseHelper.updatePlan(planModel, planDocId)
+    suspend fun updatePlan(planModel: PlanModel): Status =
+        firebaseHelper.updatePlan(planModel)
 
     // Delete a plan
-    suspend fun deletePlan(planDocId: String): Status = firebaseHelper.deletePlan(planDocId)
+    suspend fun deletePlan(planName: String): Status = firebaseHelper.deletePlan(planName)
 }
