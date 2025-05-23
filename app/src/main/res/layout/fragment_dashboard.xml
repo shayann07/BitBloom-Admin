@@ -4,11 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212">
+    android:background="@drawable/app_gradient">
 
-
-
-    <!-- Content -->
+    <!-- scrollable content under your AppBar -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,17 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:spacing="16dp">
+            android:padding="16dp">
 
-            <!-- 2x2 Card Grid -->
-            <GridLayout
+            <!-- 2×2 frosted‐glass cards -->
+            <android.widget.GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
-                android:rowCount="2"
-                android:rowOrderPreserved="false"
-                android:columnOrderPreserved="false"
                 android:useDefaultMargins="true">
 
                 <!-- Active Users -->
@@ -37,31 +31,48 @@
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#1E1E1E">
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    android:background="@drawable/glassy_bg_gradient"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:orientation="horizontal"
+                        android:background="@drawable/glassy_bg_gradient"
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
 
-                        <TextView
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/active_users"
+                            app:tint="@android:color/white" />
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Active Users"
-                            android:textColor="#BBBBBB"
-                            android:textStyle="bold" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_active_users"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1,250"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Active Users"
+                                android:textColor="#CCCCCC"
+                                android:textSize="14sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/tv_active_users"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1,250"
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -70,31 +81,49 @@
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#1E1E1E">
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    android:background="@drawable/glassy_bg_gradient"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:orientation="horizontal"
+                        android:background="@drawable/glassy_bg_gradient"
 
-                        <TextView
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/inactive_users"
+                            app:tint="@android:color/white" />
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Inactive Users"
-                            android:textColor="#BBBBBB"
-                            android:textStyle="bold" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_inactive_users"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="310"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Inactive Users"
+                                android:textColor="#CCCCCC"
+                                android:textSize="14sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/tv_inactive_users"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="310"
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -103,31 +132,49 @@
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#1E1E1E">
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    android:background="@drawable/glassy_bg_gradient"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:orientation="horizontal"
+                        android:background="@drawable/glassy_bg_gradient"
 
-                        <TextView
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/depsoiteicon"
+                            app:tint="@android:color/white" />
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Deposit"
-                            android:textColor="#BBBBBB"
-                            android:textStyle="bold" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_total_deposit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$50,000"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Deposit"
+                                android:textColor="#CCCCCC"
+                                android:textSize="14sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/tv_total_deposit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$50,000"
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -136,60 +183,76 @@
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#1E1E1E">
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    android:background="@drawable/glassy_bg_gradient"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:orientation="horizontal"
+                        android:background="@drawable/glassy_bg_gradient"
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
 
-                        <TextView
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/total_withdraw"
+                            app:tint="@android:color/white" />
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Withdrawal"
-                            android:textColor="#BBBBBB"
-                            android:textStyle="bold" />
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_total_withdrawal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$12,000"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Withdrawal"
+                                android:textColor="#CCCCCC"
+                                android:textSize="14sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/tv_total_withdrawal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$12,000"
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+            </android.widget.GridLayout>
 
-            </GridLayout>
-
-            <!-- Business Growth Chart Placeholder -->
+            <!-- Business Growth title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="Business Growth"
-                android:textColor="#BBBBBB"
-                android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textColor="#CCCCCC"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
-            <FrameLayout
+            <!-- Chart container (still use your ID!) -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/chart_container"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="8dp"
-                android:background="#1E1E1E"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp" >
-                <!-- Inflate your chart library view here -->
-            </FrameLayout>
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                android:background="@drawable/glassy_bg_gradient"
+                app:cardElevation="0dp"
+                android:padding="8dp">
+                <!-- inflate your chart here -->
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

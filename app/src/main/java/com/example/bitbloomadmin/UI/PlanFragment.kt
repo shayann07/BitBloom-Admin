@@ -1,51 +1,55 @@
 package com.example.bitbloomadmin.UI
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.bitbloomadmin.Data.remote.FirebaseHelper
+import com.example.bitbloomadmin.Factories.PlanViewModelFactory
 import com.example.bitbloomadmin.R
+import com.example.bitbloomadmin.Repository.PlanRepository
+import com.example.bitbloomadmin.Viewmodel.PlanViewModel
+import com.example.bitbloomadmin.adapter.PlanAdapter
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import com.google.android.material.button.MaterialButton
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class PlanFragment : Fragment(R.layout.fragment_plan) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PlanFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class PlanFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_plan, container, false)
-    }
+    private lateinit var planViewModel: PlanViewModel
+    private lateinit var adapter: PlanAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val addPlanButton = view.findViewById<MaterialButton>(R.id.btnAddPlan)
-        addPlanButton.setOnClickListener {
-            findNavController().navigate(R.id.action_planFragment_to_addPlanFragment)
+
+        // 1) Build your repository + viewModel
+        val repo = PlanRepository(FirebaseHelper(requireContext()))
+        val factory = PlanViewModelFactory(repo)
+        planViewModel = ViewModelProvider(this, factory)
+            .get(PlanViewModel::class.java)
+
+        // 2) Setup RecyclerView + Adapter
+        adapter = PlanAdapter()
+        val rv = view.findViewById<RecyclerView>(R.id.rvPlans)
+        rv.layoutManager = LinearLayoutManager(requireContext())
+        rv.adapter = adapter
+
+        // 3) Collect the plansFlow and submit to adapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            planViewModel.plansFlow.collect { list ->
+                adapter.submitList(list)
+            }
         }
 
+        // 4) Hook up the "Add New Plan" button
+        view.findViewById<MaterialButton>(R.id.btnAddPlan)
+            .setOnClickListener {
+                // e.g. navigate to your PlanDetailFragment
+                findNavController().navigate(R.id.action_planFragment_to_addPlanFragment)
+            }
     }
 }

@@ -19,7 +19,8 @@
     <!-- Error states -->
     <color name="colorError">#CF6679</color>
     <color name="colorOnError">#000000</color>
-
+    <color name="light_blue">#F1378AFC</color>
+    <color name="nav_bar_color">#131417</color>
     <!-- Text & icons -->
     <color name="textPrimary">#FFFFFF</color>
     <color name="textSecondary">#BBBBBB</color>

@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.PlanFragment">
+    android:background="@drawable/app_gradient">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <!-- Plans list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlans"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddPlan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddPlan"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="Add New Plan"
+        app:cornerRadius="24dp"
+        android:backgroundTint="@color/light_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"/>
 
-        <!-- RecyclerView for list of plans -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPlans"
-            android:layout_width="match_parent"
-            android:layout_height="550dp"
-            android:clipToPadding="false"
-            android:paddingBottom="80dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddPlan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Plan"
-            android:layout_below="@id/rvPlans"
-            app:cornerRadius="18dp"
-            android:layout_margin="20dp"
-            style="@style/Widget.Material3.Button"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="24dp"/>
-    </RelativeLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

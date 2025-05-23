@@ -1,5 +1,7 @@
 package com.example.bitbloomadmin.UI
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -123,28 +125,34 @@ class ReportFragment : Fragment() {
             }
         }
 
-        // Filter button
         view.findViewById<ImageButton>(R.id.btn_filter).setOnClickListener {
-            val items = arrayOf(
-                "Today",
-                "Last 7 Days",
-                "Last 30 Days",
-                "Last 365 Days",
-                "All Time"
+            // 1) inflate our custom view
+            val dialogView = layoutInflater.inflate(R.layout.material_dialog, null)
+
+            // 2) build & show the dialog
+            val dialog = AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .create()
+            dialog.show()
+
+            // 3) make the card’s corners show through (transparent window bg)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            // 4) wire up clicks
+            val mapping = mapOf(
+                R.id.item_today to TimeFilter.TODAY,
+                R.id.item_last_7_days to TimeFilter.WEEKLY,
+                R.id.item_last_30_days to TimeFilter.MONTHLY,
+                R.id.item_last_365_days to TimeFilter.ANNUALLY,
+                R.id.item_all_time to TimeFilter.ALL_TIME
             )
-            AlertDialog.Builder(requireContext())
-                .setTitle("Select Time Filter")
-                .setItems(items) { _, which ->
-                    val filter = when (which) {
-                        0 -> TimeFilter.TODAY
-                        1 -> TimeFilter.WEEKLY
-                        2 -> TimeFilter.MONTHLY
-                        3 -> TimeFilter.ANNUALLY
-                        else -> TimeFilter.ALL_TIME
-                    }
-                    viewModel.setFilter(filter)
+
+            mapping.forEach { (viewId, filterType) ->
+                dialogView.findViewById<TextView>(viewId).setOnClickListener {
+                    viewModel.setFilter(filterType)
+                    dialog.dismiss()
                 }
-                .show()
+            }
         }
     }
 }
