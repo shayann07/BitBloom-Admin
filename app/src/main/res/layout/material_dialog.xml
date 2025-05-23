@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    android:background="@android:color/transparent"
+  >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/glassy_bg_gradient"
+        android:padding="16dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Time Filter"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#33FFFFFF"/>
+
+        <!-- Options -->
+        <TextView
+            android:id="@+id/item_today"
+            style="@style/Widget.MaterialComponents.TextView.ListItem"
+            android:text="Today"/>
+
+        <TextView
+            android:id="@+id/item_last_7_days"
+            style="@style/Widget.MaterialComponents.TextView.ListItem"
+            android:text="Last 7 Days"/>
+
+        <TextView
+            android:id="@+id/item_last_30_days"
+            style="@style/Widget.MaterialComponents.TextView.ListItem"
+            android:text="Last 30 Days"/>
+
+        <TextView
+            android:id="@+id/item_last_365_days"
+            style="@style/Widget.MaterialComponents.TextView.ListItem"
+            android:text="Last 365 Days"/>
+
+        <TextView
+            android:id="@+id/item_all_time"
+            style="@style/Widget.MaterialComponents.TextView.ListItem"
+            android:text="All Time"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
