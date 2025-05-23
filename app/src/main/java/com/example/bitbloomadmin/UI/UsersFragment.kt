@@ -23,7 +23,7 @@ import com.example.bitbloomadmin.databinding.FragmentUsersBinding
 import com.example.bitbloomadmin.models.UserWithAccount
 import kotlinx.coroutines.launch
 
-class UsersFragment : Fragment() {
+class UsersFragment : BaseFragment() {
 
     private var _binding: FragmentUsersBinding? = null
     private val binding get() = _binding!!

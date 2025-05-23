@@ -23,7 +23,7 @@ import com.example.bitbloomadmin.Viewmodel.ReportViewModel
 import com.example.bitbloomadmin.utils.TimeFilter
 import kotlinx.coroutines.launch
 
-class ReportFragment : Fragment() {
+class ReportFragment : BaseFragment() {
     private lateinit var viewModel: ReportViewModel
 
     override fun onCreateView(

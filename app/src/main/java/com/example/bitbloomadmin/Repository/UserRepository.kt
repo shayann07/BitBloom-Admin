@@ -23,7 +23,6 @@ class UserRepository(
         userDao.insertAllUsers(users)
         userDao.insertAllAccounts(accounts)
 
-        println("✅ [Repo] Synced ${users.size} users & ${accounts.size} accounts into Room")
     }
 
 
@@ -38,9 +37,6 @@ class UserRepository(
             val merged = accounts.mapNotNull { acc ->
                 val user = userMap[acc.userId]
 
-                if (user == null) {
-                    println("⚠️ No match: acc.userId = ${acc.userId} not found in userMap.keys = ${userMap.keys.take(5)}...") // sample keys
-                }
                 user?.let {
                     UserWithAccount(
                         name = it.name,
@@ -61,11 +57,9 @@ class UserRepository(
                 }
             }
 
-            println("✅ [Repo] Merged ${merged.size} users with accounts")
             merged
         }
     }
-
   fun addAnnouncement(announcement: AnnouncementModel) {
       firebaseHelper.addAnnouncement(announcement)
   }

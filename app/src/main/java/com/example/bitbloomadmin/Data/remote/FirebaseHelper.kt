@@ -93,7 +93,7 @@ class FirebaseHelper(context: Context) {
                 val userName = userMap[userId]?.name ?: "Unknown"
 
                 val withdrawModel = WithdrawModel(
-                    address = doc.getString("address") ?: "",
+                    address = doc.getString("walletAddress") ?: "",
                     amount = doc.getDouble("amount") ?: 0.0,
                     balanceUpdated = doc.getBoolean("balanceUpdated") ?: false,
                     status = doc.getString("status") ?: "",
@@ -145,28 +145,38 @@ class FirebaseHelper(context: Context) {
         }
     }
 
-    suspend fun updatePlan(planModel: PlanModel, planDocId: String): Status {
+    suspend fun updatePlan(planModel: PlanModel): Status {
         return try {
-            // Check for duplicate plan name, excluding this planDocId
-            val plansSnapshot =
-                firestore.collection("plans").whereEqualTo("name", planModel.name).get().await()
+            val plansRef = firestore.collection("plans")
+            val snapshot = plansRef
+                .whereEqualTo("name", planModel.name)
+                .get().await()
 
-            // If more than 1 doc with the same name (including this one), it's a duplicate
-            val isDuplicateName = plansSnapshot.documents.count { it.id != planDocId } > 0
-            Log.d("FirebaseHelper", "isDuplicateName: $isDuplicateName")
+            // If no doc matches this name, treat as error
+            if (snapshot.isEmpty) {
+                Log.w("FirebaseHelper", "❌ No plan found with name=${planModel.name}")
+                return Status.ERROR
+            }
 
-            if (isDuplicateName) return Status.PLAN_EXISTS
+            if (snapshot.size() > 1) {
+                // Duplicate name
+                return Status.PLAN_EXISTS
+            }
 
-            // Update existing plan, set updatedAt to server timestamp
-            val planData = planModel.copy(updatedAt = FieldValue.serverTimestamp()).toMap()
+            // Exactly one doc → update it
+            val docId = snapshot.documents[0].id
+            val planData = planModel
+                .copy(updatedAt = FieldValue.serverTimestamp())
+                .toMap()
 
-            firestore.collection("plans").document(planDocId).set(planData, SetOptions.merge())
+            plansRef.document(docId)
+                .set(planData, SetOptions.merge())
                 .await()
 
-            Log.d("FirebaseHelper", "✅ Plan updated successfully!")
             Status.SUCCESS
+
         } catch (e: Exception) {
-            Log.e("FirebaseHelper", "❌ Error updating plan: $e")
+            Log.e("FirebaseHelper", "❌ Error updating plan: $e", e)
             Status.ERROR
         }
     }
@@ -187,13 +197,31 @@ class FirebaseHelper(context: Context) {
         awaitClose { listenerRegistration.remove() }
     }
 
-    suspend fun deletePlan(planDocId: String): Status {
+    suspend fun deletePlan(planName: String): Status {
         return try {
-            firestore.collection("plans").document(planDocId).delete().await()
-            Log.d("FirebaseHelper", "✅ Plan deleted successfully!")
+            // 1) Query for docs whose "name" == planName
+            val snapshot = firestore
+                .collection("plans")
+                .whereEqualTo("name", planName)
+                .get()
+                .await()
+
+            // 2) If none found, treat as error
+            if (snapshot.isEmpty) {
+                Log.w("FirebaseHelper", "❌ No plan found with name=$planName to delete")
+                return Status.ERROR
+            }
+
+            // 3) Delete every matching document
+            snapshot.documents.forEach { doc ->
+                doc.reference.delete().await()
+            }
+
+            Log.d("FirebaseHelper", "✅ Plan(s) deleted successfully!")
             Status.SUCCESS
+
         } catch (e: Exception) {
-            Log.e("FirebaseHelper", "❌ Error deleting plan: ${e.message}")
+            Log.e("FirebaseHelper", "❌ Error deleting plan: ${e.message}", e)
             Status.ERROR
         }
     }
@@ -201,6 +229,7 @@ class FirebaseHelper(context: Context) {
     /**
      * Observes the userPlans collection and emits updates as a Flow of UserPlanModel lists.
      */
+
     fun getUserPlansFlow(): Flow<List<UserPlanModel>> = callbackFlow {
         val registration =
             firestore.collection("userPlans").addSnapshotListener { snapshot, error ->

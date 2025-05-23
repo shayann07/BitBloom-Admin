@@ -9,26 +9,32 @@ import com.example.bitbloomadmin.R
 import com.example.bitbloomadmin.models.PlanModel
 
 class PlanAdapter(
-    private var plans: List<PlanModel> = emptyList()
+    private var plans: List<PlanModel> = emptyList(),
+    private val onItemClick: (PlanModel) -> Unit   // <-- a lambda that gets invoked on tap
 ) : RecyclerView.Adapter<PlanAdapter.PlanVH>() {
 
     inner class PlanVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val name = itemView.findViewById<TextView>(R.id.tv_plan_name)
-        private val min_invested = itemView.findViewById<TextView>(R.id.tv_invested_amount)
-        private val roi = itemView.findViewById<TextView>(R.id.tv_daily_roi)
-        private val durationDays = itemView.findViewById<TextView>(R.id.tv_duration_days)
+        private val name          = itemView.findViewById<TextView>(R.id.tv_plan_name)
+        private val minInvested   = itemView.findViewById<TextView>(R.id.tv_invested_amount)
+        private val roi           = itemView.findViewById<TextView>(R.id.tv_daily_roi)
+        private val durationDays  = itemView.findViewById<TextView>(R.id.tv_duration_days)
 
         fun bind(p: PlanModel) {
-            name.text = p.name
-            min_invested.text = "$${p.minInvestment}"
-            roi.text = "${p.directProfit}%"
+            name.text         = p.name
+            minInvested.text  = "$${p.minInvestment}"
+            roi.text          = "${p.directProfit}%"
             durationDays.text = p.durationDays.toString()
-            // …and any icons or backgrounds…
+
+            // **Set the click listener on the whole card view**
+            itemView.setOnClickListener {
+                onItemClick(p)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        PlanVH(LayoutInflater.from(parent.context).inflate(R.layout.item_plan, parent, false))
+        PlanVH(LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_plan, parent, false))
 
     override fun onBindViewHolder(holder: PlanVH, position: Int) =
         holder.bind(plans[position])
@@ -40,3 +46,4 @@ class PlanAdapter(
         notifyDataSetChanged()
     }
 }
+
