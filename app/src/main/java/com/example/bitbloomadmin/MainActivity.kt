@@ -24,10 +24,10 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         val navController = findNavController(R.id.nav_host_fragment)
 
-        binding.bottomNav.setupWithNavController(navController)
+        binding.bottomNavBar.setupWithNavController(navController)
 
         // ...then override it with manual listeners:
-        binding.bottomNav.setOnItemSelectedListener { menuItem ->
+        binding.bottomNavBar.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_dashboard -> {
                     navController.navigate(R.id.dashboardFragment)

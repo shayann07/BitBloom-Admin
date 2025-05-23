@@ -1,140 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_gradient"
-    android:paddingVertical="16dp">
+    android:paddingVertical="16dp"
+    android:background="#121212"
+    >
 
-    <?xml version="1.0" encoding="utf-8"?>
-    <com.google.android.material.card.MaterialCardView
+<com.google.android.material.card.MaterialCardView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="16dp"
+app:cardCornerRadius="24dp"
+app:cardElevation="0dp"
+app:cardBackgroundColor="@android:color/transparent"
+android:background="@drawable/glassy_bg_gradient"/>
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="24dp">
+
+<!-- Title -->
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Add New Plan"
+    android:textColor="@android:color/white"
+    android:textSize="20sp"
+    android:textStyle="bold"/>
+
+<!-- Plan Name -->
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Plan Name"
+    android:layout_marginTop="16dp"
+    app:boxBackgroundMode="outline"
+    app:boxStrokeColor="@android:color/white"
+    app:boxStrokeWidth="2dp"
+    app:boxCornerRadiusTopStart="16dp"
+    app:boxCornerRadiusTopEnd="16dp"
+    app:boxCornerRadiusBottomEnd="16dp"
+    app:boxCornerRadiusBottomStart="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etPlanName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="0dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        >
+        android:inputType="text" />
+</com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/glassy_bg_gradient"
-            android:padding="24dp">
+<!-- Minimum Amount -->
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Minimum Amount"
+    android:layout_marginTop="12dp"
+    app:boxBackgroundMode="outline"
+    app:boxStrokeColor="@android:color/white"
+    app:boxStrokeWidth="2dp"
+    app:boxCornerRadiusTopStart="16dp"
+    app:boxCornerRadiusTopEnd="16dp"
+    app:boxCornerRadiusBottomEnd="16dp"
+    app:boxCornerRadiusBottomStart="16dp">
 
-            <!-- Title -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add New Plan"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etMinAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+</com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Plan Name -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Plan Name"
-                android:layout_marginTop="16dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@android:color/white"
-                app:boxStrokeWidth="2dp"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp">
+<!-- Duration (Days) -->
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Duration (Days)"
+    android:layout_marginTop="12dp"
+    app:boxBackgroundMode="outline"
+    app:boxStrokeColor="@android:color/white"
+    app:boxStrokeWidth="2dp"
+    app:boxCornerRadiusTopStart="16dp"
+    app:boxCornerRadiusTopEnd="16dp"
+    app:boxCornerRadiusBottomEnd="16dp"
+    app:boxCornerRadiusBottomStart="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPlanName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etDurationDays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number" />
+</com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Minimum Amount -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Minimum Amount"
-                android:layout_marginTop="12dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@android:color/white"
-                app:boxStrokeWidth="2dp"
-                app:boxCornerRadius="16dp">
+<!-- Daily Percentage -->
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Daily Percentage"
+    android:layout_marginTop="12dp"
+    app:boxBackgroundMode="outline"
+    app:boxStrokeColor="@android:color/white"
+    app:boxStrokeWidth="2dp"
+    app:boxCornerRadiusTopStart="16dp"
+    app:boxCornerRadiusTopEnd="16dp"
+    app:boxCornerRadiusBottomEnd="16dp"
+    app:boxCornerRadiusBottomStart="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etMinAmount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"/>
-            </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etDailyPercentage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+</com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Duration (Days) -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Duration (Days)"
-                android:layout_marginTop="12dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@android:color/white"
-                app:boxStrokeWidth="2dp"
-                app:boxCornerRadius="16dp">
+<!-- Direct Profit -->
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Direct Profit"
+    android:layout_marginTop="12dp"
+    app:boxBackgroundMode="outline"
+    app:boxStrokeColor="@android:color/white"
+    app:boxStrokeWidth="2dp"
+    app:boxCornerRadiusTopStart="16dp"
+    app:boxCornerRadiusTopEnd="16dp"
+    app:boxCornerRadiusBottomEnd="16dp"
+    app:boxCornerRadiusBottomStart="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDurationDays"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"/>
-            </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etDirectProfit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+</com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Daily Percentage -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Daily Percentage"
-                android:layout_marginTop="12dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@android:color/white"
-                app:boxStrokeWidth="2dp"
-                app:boxCornerRadius="16dp">
+<!-- Confirm Button -->
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btnConfirmOrUpdate"
+    style="@style/Widget.Material3.Button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:backgroundTint="@color/light_blue"
+    android:text="Add Plan"
+    app:cornerRadius="24dp" />
+</LinearLayout>
+    </ScrollView>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDailyPercentage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Direct Profit -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Direct Profit"
-                android:layout_marginTop="12dp"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@android:color/white"
-                app:boxStrokeWidth="2dp"
-                app:boxCornerRadius="16dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDirectProfit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Add Plan Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnConfirmOrUpdate"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/light_blue"
-                android:text="Add Plan"
-                android:layout_marginTop="24dp"
-                app:cornerRadius="24dp"/>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-</ScrollView>

@@ -47,7 +47,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/active_users"
+                            android:src="@drawable/activeusers"
                             app:tint="@android:color/white" />
 
                         <LinearLayout
@@ -149,7 +149,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/depsoiteicon"
+                            android:src="@drawable/deposit"
                             app:tint="@android:color/white" />
 
                         <LinearLayout
