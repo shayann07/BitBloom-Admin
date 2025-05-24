@@ -53,6 +53,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
 
         val userFactory = UserViewModelFactory(userRepository)
         userViewModel = ViewModelProvider(this, userFactory)[UserViewModel::class.java]
+        view?.let { setupDrawerTrigger(it) }
 
 
 

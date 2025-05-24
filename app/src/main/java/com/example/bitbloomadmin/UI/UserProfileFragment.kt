@@ -38,6 +38,7 @@ class UserProfileFragment : BaseFragment() {
         _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         utils = Utils(requireContext())
         utils.startLoadingAnimation()
+        view?.let { setupDrawerTrigger(it) }
 
         val args = arguments
 
