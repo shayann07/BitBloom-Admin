@@ -48,6 +48,7 @@ class UsersFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupDrawerTrigger(view)
 
         adapter = UserListAdapter(emptyList(), object : UserListAdapter.ClickHandler {
             override fun onClick(user: UserWithAccount) {

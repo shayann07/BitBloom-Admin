@@ -36,7 +36,7 @@ class ReportFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupDrawerTrigger(view)
         // Initialize dependencies
         val db = AppDatabase.getDatabase(requireContext())
         val firebaseHelper = FirebaseHelper(requireContext())

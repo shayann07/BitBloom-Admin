@@ -32,6 +32,7 @@ class DashboardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupDrawerTrigger(view)
 
         val tvActive = view.findViewById<TextView>(R.id.tv_active_users)
         val tvInactive = view.findViewById<TextView>(R.id.tv_inactive_users)

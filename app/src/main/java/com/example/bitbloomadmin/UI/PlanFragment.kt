@@ -27,6 +27,7 @@ class PlanFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupDrawerTrigger(view)
 
         // 1) Init ViewModel
         val repo    = PlanRepository(FirebaseHelper(requireContext()))
