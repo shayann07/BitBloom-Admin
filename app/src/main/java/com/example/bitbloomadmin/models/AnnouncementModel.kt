@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 
 data class AnnouncementModel(
     val id: String = "",
-    val announcement: String = "",
+    val announcementTitlte: String = "",
     val message: String = "",
     val time: Timestamp = Timestamp.now()
 )

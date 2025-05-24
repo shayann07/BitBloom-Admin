@@ -63,6 +63,12 @@ class UserRepository(
   fun addAnnouncement(announcement: AnnouncementModel) {
       firebaseHelper.addAnnouncement(announcement)
   }
+    fun fetchAnnouncements(
+        onSuccess: (List<AnnouncementModel>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        firebaseHelper.fetchAnnouncements(onSuccess, onFailure)
+    }
 
 }
 

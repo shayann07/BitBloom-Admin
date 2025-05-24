@@ -16,6 +16,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -121,6 +122,25 @@ class FirebaseHelper(context: Context) {
             it.localizedMessage
         }
     }
+
+    fun fetchAnnouncements(
+        onSuccess: (List<AnnouncementModel>) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        firestore.collection("announcements")
+            .orderBy("time", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val announcements = querySnapshot.documents.mapNotNull { doc ->
+                    doc.toObject(AnnouncementModel::class.java)
+                }
+                onSuccess(announcements)
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
 
     suspend fun addPlan(planModel: PlanModel): Status {
         return try {
