@@ -1,10 +1,12 @@
 package com.example.bitbloomadmin.Viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bitbloomadmin.Repository.UserRepository
 import com.example.bitbloomadmin.models.AnnouncementModel
 import com.example.bitbloomadmin.models.UserWithAccount
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -24,6 +26,20 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
     }
     fun addAnnouncement(announcement: AnnouncementModel) {
         repository.addAnnouncement(announcement)
+    }
+
+    private val _announcements = MutableStateFlow<List<AnnouncementModel>>(emptyList())
+    val announcements: StateFlow<List<AnnouncementModel>> = _announcements
+
+    fun fetchAnnouncements() {
+        repository.fetchAnnouncements(
+            onSuccess = { list ->
+                _announcements.value = list
+            },
+            onFailure = { error ->
+                Log.e("UserViewModel", "Failed to fetch announcements", error)
+            }
+        )
     }
 
 }
