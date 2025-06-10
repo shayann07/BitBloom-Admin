@@ -7,24 +7,20 @@ import com.example.bitbloomadmin.models.UserWithAccount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
-
 class UserRepository(
     private val firebaseHelper: FirebaseHelper,
     private val userDao: UserDao
 ) {
 
+
     suspend fun syncFromFirebase() {
-        val users = firebaseHelper.fetchUsers()
+        val users    = firebaseHelper.fetchUsers()
         val accounts = firebaseHelper.fetchAccounts()
 
-        userDao.clearAllUsers()
-        userDao.clearAllAccounts()
-
+        // Instead of clearing tables, just upsert:
         userDao.insertAllUsers(users)
         userDao.insertAllAccounts(accounts)
-
     }
-
 
     fun getUsersWithAccounts(): Flow<List<UserWithAccount>> {
         return combine(
@@ -34,41 +30,37 @@ class UserRepository(
 
             val userMap = users.associateBy { it.id }
 
-            val merged = accounts.mapNotNull { acc ->
-                val user = userMap[acc.userId]
+            accounts.mapNotNull { acc ->
+                val user = userMap[acc.userId] ?: return@mapNotNull null
 
-                user?.let {
-                    UserWithAccount(
-                        name = it.name,
-                        userId = it.id,
-                        email = it.email,
-                        phone = it.phoneNumber,
-                        password = it.password,
-                        referalCode = it.referralCode,
-                        accountId = acc.accountId,
-                        totalDeposit = acc.investment.total_deposit,
-                        currentBalance = acc.investment.remaining_balance,
-                        withdraw = acc.earnings.buying_profit,
-                        totalEarned = acc.earnings.total_earned,
-                        lifetime_referral_income = acc.earnings.lifetime_referral_income,
-                        lifetime_roi_income = acc.earnings.lifetime_roi_income,
-                        lifetime_team_income = acc.earnings.lifetime_team_income,
-                    )
-                }
+                UserWithAccount(
+                    name                    = user.name,
+                    userId                  = user.id,
+                    email                   = user.email,
+                    phone                   = user.phoneNumber,
+                    password                = user.password,
+                    referalCode             = user.referralCode,
+                    accountId               = acc.accountId,
+                    totalDeposit            = acc.investment.total_deposit,
+                    currentBalance          = acc.investment.remaining_balance,
+                    withdraw                = acc.earnings.buying_profit,
+                    totalEarned             = acc.earnings.total_earned,
+                    lifetime_referral_income= acc.earnings.lifetime_referral_income,
+                    lifetime_roi_income     = acc.earnings.lifetime_roi_income,
+                    lifetime_team_income    = acc.earnings.lifetime_team_income,
+                )
             }
-
-            merged
         }
     }
-  fun addAnnouncement(announcement: AnnouncementModel) {
-      firebaseHelper.addAnnouncement(announcement)
-  }
+
+    fun addAnnouncement(announcement: AnnouncementModel) {
+        firebaseHelper.addAnnouncement(announcement)
+    }
+
     fun fetchAnnouncements(
         onSuccess: (List<AnnouncementModel>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
         firebaseHelper.fetchAnnouncements(onSuccess, onFailure)
     }
-
 }
-

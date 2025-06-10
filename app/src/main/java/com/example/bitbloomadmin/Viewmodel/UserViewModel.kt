@@ -13,9 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val repository: UserRepository) : ViewModel() {
-    init {
-        syncNow() // ✅ Automatically sync on ViewModel creation
-    }
+
     val usersWithAccounts: StateFlow<List<UserWithAccount>> = repository.getUsersWithAccounts()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
@@ -24,6 +22,7 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
             repository.syncFromFirebase()
         }
     }
+
     fun addAnnouncement(announcement: AnnouncementModel) {
         repository.addAnnouncement(announcement)
     }

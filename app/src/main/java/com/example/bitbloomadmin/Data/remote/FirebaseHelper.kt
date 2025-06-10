@@ -84,30 +84,39 @@ class FirebaseHelper(context: Context) {
 
     suspend fun fetchWithdrawRequestsWithUserNames(): List<WithdrawWithUserName> {
         return try {
-            val users = fetchUsers()
-            val userMap = users.associateBy { it.id }
+            // 1) Fetch all users into a map
+            val users    = fetchUsers()
+            val userMap  = users.associateBy { it.id }
 
+            // 2) Get all withdraw requests
             val snapshot = firestore.collection("withdraw_requests").get().await()
 
-            snapshot.documents.mapNotNull { doc ->
+            // 3) Map to WithdrawWithUserName
+            val result = snapshot.documents.mapNotNull { doc ->
                 val userId = doc.getString("userId") ?: return@mapNotNull null
                 val userName = userMap[userId]?.name ?: "Unknown"
 
                 val withdrawModel = WithdrawModel(
-                    address = doc.getString("walletAddress") ?: "",
-                    amount = doc.getDouble("amount") ?: 0.0,
-                    balanceUpdated = doc.getBoolean("balanceUpdated") ?: false,
-                    status = doc.getString("status") ?: "",
-                    timestamp = doc.getTimestamp("timestamp") ?: Timestamp.now(),
+                    address       = doc.getString("walletAddress") ?: "",
+                    amount        = doc.getDouble("amount") ?: 0.0,
+                    balanceUpdated= doc.getBoolean("balanceUpdated") ?: false,
+                    status        = doc.getString("status") ?: "",
+                    timestamp     = doc.getTimestamp("timestamp") ?: Timestamp.now(),
                     transactionId = doc.getString("transactionId") ?: doc.id,
-                    type = doc.getString("type") ?: "withdraw",
-                    userId = userId
+                    type          = doc.getString("type") ?: "withdraw",
+                    userId        = userId
                 )
-
-                WithdrawWithUserName(
-                    withdraw = withdrawModel, userName = userName
-                )
+                WithdrawWithUserName(withdraw = withdrawModel, userName = userName)
             }
+
+            // 4) Compute & log total of approved withdrawals
+            val approvedTotal = result
+                .filter { it.withdraw.status.equals("approved", ignoreCase = true) }
+                .sumOf { it.withdraw.amount }
+
+            Log.d("FirebaseHelper", "Total approved withdrawal amount: $approvedTotal")
+
+            result
         } catch (e: Exception) {
             Log.e("FirebaseHelper", "Error fetching withdraw transactions", e)
             emptyList()

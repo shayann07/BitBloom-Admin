@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.MaterialComponents.TextView.ListItem" parent="Widget.MaterialComponents.TextView">
+    <!-- 1) List‐item widget style (no duplicates) -->
+    <style name="Widget.MaterialComponents.TextView.ListItem"
+        parent="Widget.MaterialComponents.TextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingVertical">12dp</item>
@@ -9,6 +11,15 @@
         <item name="android:paddingEnd">8dp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="Theme.BitBloomAdmin.Splash"
+        parent="Base.Theme.BitBloomAdmin">
+        <!-- these attributes will still drive the core‐splashscreen behavior -->
+        <item name="windowSplashScreenBackground">@color/colorPrimary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.BitBloomAdmin</item>
     </style>
 
 
