@@ -6,7 +6,7 @@ data class PlanModel(
     val durationDays: Int = 0,
     val percentage: Double = 0.0,
     val directProfit: Double = 0.0,
-    val updatedAt: Any? = null // Replace with correct type if known
+    val updatedAt: Any? = null
 ) {
     fun toMap(): Map<String, Any?> {
         return mapOf(
