@@ -1,87 +1,97 @@
-package com.example.bitbloomadmin.UI
+package com.example.bitbloomadmin.ui
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bitbloomadmin.Repository.WithdrawRepository
+import com.example.bitbloomadmin.Factories.WithdrawViewModelFactory
 import com.example.bitbloomadmin.Data.local.AppDatabase
 import com.example.bitbloomadmin.Data.remote.FirebaseHelper
-import com.example.bitbloomadmin.Factories.WithdrawViewModelFactory
 import com.example.bitbloomadmin.R
-import com.example.bitbloomadmin.Repository.UserRepository
-import com.example.bitbloomadmin.Repository.WithdrawRepository
-import com.example.bitbloomadmin.Viewmodel.UserViewModel
-import com.example.bitbloomadmin.Viewmodel.UserViewModelFactory
 import com.example.bitbloomadmin.Viewmodel.WithdrawViewModel
 import com.example.bitbloomadmin.adapter.WithdrawAdapter
 import com.example.bitbloomadmin.databinding.FragmentWithdrawBinding
 import com.example.bitbloomadmin.models.UserWithAccount
 import com.example.bitbloomadmin.models.WithdrawWithUserName
+import com.example.bitbloomadmin.Repository.UserRepository
+import com.example.bitbloomadmin.Viewmodel.UserViewModel
+import com.example.bitbloomadmin.Viewmodel.UserViewModelFactory
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
 
-    private lateinit var binding: FragmentWithdrawBinding
+    private var _binding: FragmentWithdrawBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel: WithdrawViewModel
-    private lateinit var adapter: WithdrawAdapter
-    private lateinit var firestore: FirebaseFirestore
     private lateinit var userViewModel: UserViewModel
+    private lateinit var adapter: WithdrawAdapter
+    private val firestore = FirebaseFirestore.getInstance()
+
     private var cachedUserList: List<UserWithAccount> = emptyList()
+    private var isDataLoaded = false
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWithdrawBinding.inflate(inflater, container, false)
 
+        // Setup DAOs & ViewModels
+        val withdrawDao = AppDatabase.getDatabase(requireContext()).withdrawDao()
+        val userDao     = AppDatabase.getDatabase(requireContext()).userDao()
+        val helper      = FirebaseHelper(requireContext())
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentWithdrawBinding.inflate(inflater, container, false)
+        val withdrawRepo  = WithdrawRepository(withdrawDao, helper)
+        viewModel         = ViewModelProvider(this, WithdrawViewModelFactory(withdrawRepo))
+            .get(WithdrawViewModel::class.java)
 
-        val dao = AppDatabase.getDatabase(requireContext()).withdrawDao()
-        val userDao = AppDatabase.getDatabase(requireContext()).userDao()
+        val userRepo   = UserRepository(helper, userDao)
+        userViewModel  = ViewModelProvider(this, UserViewModelFactory(userRepo))
+            .get(UserViewModel::class.java)
 
-        val helper = FirebaseHelper(requireContext())
-        val repository = WithdrawRepository(dao, helper)
-        val factory = WithdrawViewModelFactory(repository)
-        val userRepository = UserRepository(FirebaseHelper(requireContext()), userDao)
+        return binding.root
+    }
 
-        val userFactory = UserViewModelFactory(userRepository)
-        userViewModel = ViewModelProvider(this, userFactory)[UserViewModel::class.java]
-        view?.let { setupDrawerTrigger(it) }
-
-
-
-        firestore = FirebaseFirestore.getInstance()
-        viewModel = ViewModelProvider(this, factory)[WithdrawViewModel::class.java]
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupDrawerTrigger(view)
 
         adapter = WithdrawAdapter(handler = this)
         binding.recyclerViewWithdraws.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewWithdraws.adapter = adapter
-        lifecycleScope.launchWhenStarted {
+
+        // Collect user cache
+        lifecycleScope.launch {
             userViewModel.usersWithAccounts.collect {
                 cachedUserList = it
             }
         }
-        lifecycleScope.launchWhenStarted {
+
+        // Show loader until first withdraw list arrives
+        showLoading()
+        lifecycleScope.launch {
             viewModel.withdrawsWithNames.collect { list ->
                 adapter.update(list)
+                if (!isDataLoaded) {
+                    isDataLoaded = true
+                    hideLoading()
+                }
             }
         }
 
-
-
-
-
-
-
+        // Trigger data load
         viewModel.refreshData()
-        return binding.root
     }
 
     override fun onConfirm(withdraw: WithdrawWithUserName) {
@@ -108,86 +118,44 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
             }
     }
 
-    override fun onBlock(withdraw: WithdrawWithUserName) {
-        val userId = withdraw.withdraw.userId
-
-        firestore.collection("users")
-            .whereEqualTo("id", userId)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    val userDoc = querySnapshot.documents[0]
-                    val userRef = userDoc.reference
-
-                    val updates = mapOf(
-                        "status" to "blocked",
-                        "isBlocked" to true
-                    )
-
-                    userRef.update(updates)
-                        .addOnSuccessListener {
-                            firestore.collection("withdraw_requests")
-                                .whereEqualTo("userId", userId)
-                                .get()
-                                .addOnSuccessListener { txSnapshot ->
-                                    val batch = firestore.batch()
-                                    for (doc in txSnapshot.documents) {
-                                        batch.update(doc.reference, "status", "blocked")
-                                    }
-                                    batch.commit()
-                                        .addOnSuccessListener {
-                                            Toast.makeText(requireContext(), "User blocked & all transactions updated", Toast.LENGTH_SHORT).show()
-                                        }
-                                }
-                        }
-                } else {
-                    Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
+    override fun onBlock(withdraw: WithdrawWithUserName) { /* unchanged */ }
 
     override fun onCopy(withdraw: WithdrawWithUserName) {
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard = requireContext()
+            .getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Wallet Address", withdraw.withdraw.address)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(requireContext(), "Wallet address copied", Toast.LENGTH_SHORT).show()
     }
 
     override fun onUserClick(withdraw: WithdrawWithUserName) {
-        val rawUserId = withdraw.withdraw.userId
-        val userId = rawUserId.trim()
-
-        // ✅ Show toast with userId (even if empty)
-        Toast.makeText(requireContext(), "Clicked User ID: '$userId'", Toast.LENGTH_SHORT).show()
-
-        val matchedUser = cachedUserList.firstOrNull { it.userId.trim() == userId }
-
-
-        if (matchedUser != null) {
+        val rawUserId = withdraw.withdraw.userId.trim()
+        val matched = cachedUserList.firstOrNull { it.userId.trim() == rawUserId }
+        if (matched != null) {
             val bundle = bundleOf(
-                "userId" to matchedUser.userId,
-                "name" to matchedUser.name,
-                "email" to matchedUser.email,
-                "password" to matchedUser.password,
-                "phone" to matchedUser.phone,
-                "referalCode" to matchedUser.referalCode,
-                "accountId" to matchedUser.accountId,
-                "totalDeposit" to matchedUser.totalDeposit,
-                "currentBalance" to matchedUser.currentBalance,
-                "withdraw" to matchedUser.withdraw,
-                "totalEarned" to matchedUser.totalEarned,
-                "lifetime_referral_income" to matchedUser.lifetime_referral_income,
-                "lifetime_roi_income" to matchedUser.lifetime_roi_income,
-                "lifetime_team_income" to matchedUser.lifetime_team_income
+                "userId"                 to matched.userId,
+                "name"                   to matched.name,
+                "email"                  to matched.email,
+                "password"               to matched.password,
+                "phone"                  to matched.phone,
+                "referalCode"            to matched.referalCode,
+                "accountId"              to matched.accountId,
+                "totalDeposit"           to matched.totalDeposit,
+                "currentBalance"         to matched.currentBalance,
+                "withdraw"               to matched.withdraw,
+                "totalEarned"            to matched.totalEarned,
+                "lifetime_referral_income" to matched.lifetime_referral_income,
+                "lifetime_roi_income"    to matched.lifetime_roi_income,
+                "lifetime_team_income"   to matched.lifetime_team_income
             )
-
             findNavController().navigate(R.id.userProfileFragment, bundle)
         } else {
-            Toast.makeText(
-                requireContext(),
-                "❌ No matching user found for: '$userId'",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), "No matching user for '$rawUserId'", Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
+}

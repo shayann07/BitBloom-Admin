@@ -1,10 +1,7 @@
-package com.example.bitbloomadmin.UI
+package com.example.bitbloomadmin.ui
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ScrollView
@@ -16,45 +13,48 @@ open class BaseFragment : Fragment() {
 
     private var loadingOverlay: View? = null
 
-    /** Setup drawer trigger via menu icon in fragment layout */
+    /** Setup the drawer icon click to open the nav drawer */
     fun setupDrawerTrigger(view: View) {
-        view.findViewById<ImageView>(R.id.menuIcon)?.setOnClickListener {
-            (activity as? MainActivity)?.openDrawer()
-        }
+        view.findViewById<ImageView>(R.id.menuIcon)
+            ?.setOnClickListener { (activity as? MainActivity)?.openDrawer() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Determine the container to add the overlay.
-        var container: ViewGroup = view as? ViewGroup ?: return
 
-        // If the root view is a ScrollView with one child, wrap that child in a FrameLayout.
-        if (view is ScrollView && view.childCount == 1) {
-            val originalChild = view.getChildAt(0)
-            view.removeView(originalChild)
-            val frameLayout = FrameLayout(requireContext())
-            frameLayout.layoutParams = originalChild.layoutParams
-            frameLayout.addView(originalChild)
-            view.addView(frameLayout)
-            container = frameLayout
+        // 1) Choose a ViewGroup to host the overlay
+        val container: ViewGroup = when {
+            view is ScrollView && view.childCount == 1 -> {
+                // Wrap the ScrollView’s single child so we can overlay on it
+                val child = view.getChildAt(0)
+                view.removeView(child)
+                FrameLayout(requireContext()).apply {
+                    layoutParams = child.layoutParams
+                    addView(child)
+                    view.addView(this)
+                }
+            }
+            view is ViewGroup -> view
+            else -> return
         }
 
-
-    }
-
-    fun showLoading() {
-        Log.d("BaseFragment", "showLoading called")
-        loadingOverlay?.apply {
-            visibility = View.VISIBLE
-            // Bring the overlay to the front and set a high elevation to ensure it appears above everything.
-            bringToFront()
-            elevation = 100f
-            requestLayout()
+        // 2) Inflate the overlay once and add it
+        if (loadingOverlay == null) {
+            loadingOverlay = layoutInflater
+                .inflate(R.layout.dialog_loading_overlay, container, false)
+                .apply { isClickable = true }
+            container.addView(loadingOverlay)
         }
     }
 
-    fun hideLoading() {
-        Log.d("BaseFragment", "hideLoading called")
-        loadingOverlay?.visibility = View.GONE
+    /** Show the Lottie loading overlay */
+    fun showLoading() = loadingOverlay?.let {
+        it.visibility = View.VISIBLE
+        it.bringToFront()
+    }
+
+    /** Hide the Lottie loading overlay */
+    fun hideLoading() = loadingOverlay?.let {
+        it.visibility = View.GONE
     }
 }

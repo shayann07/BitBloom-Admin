@@ -3,7 +3,10 @@
     >
 
 
-
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/dashboard"
+        android:title="Dashboard" />
 
     <item
         android:id="@+id/nav_users"
@@ -14,10 +17,7 @@
         android:id="@+id/nav_plans"
         android:icon="@drawable/plan"
         android:title="Plans" />
-    <item
-        android:id="@+id/nav_dashboard"
-        android:icon="@drawable/dashboard"
-        android:title="Dashboard" />
+
 
     <item
         android:id="@+id/nav_reports"

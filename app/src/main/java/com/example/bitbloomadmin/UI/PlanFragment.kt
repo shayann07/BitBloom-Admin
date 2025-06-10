@@ -1,22 +1,21 @@
-package com.example.bitbloomadmin.UI
+package com.example.bitbloomadmin.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.bitbloomadmin.R
+import com.example.bitbloomadmin.adapter.PlanAdapter
 import com.example.bitbloomadmin.Data.remote.FirebaseHelper
 import com.example.bitbloomadmin.Factories.PlanViewModelFactory
-import com.example.bitbloomadmin.R
 import com.example.bitbloomadmin.Repository.PlanRepository
 import com.example.bitbloomadmin.Viewmodel.PlanViewModel
-import com.example.bitbloomadmin.adapter.PlanAdapter
 import com.example.bitbloomadmin.models.PlanModel
-import com.fasterxml.jackson.databind.ser.Serializers.Base
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
@@ -25,43 +24,45 @@ class PlanFragment : BaseFragment() {
     private lateinit var planViewModel: PlanViewModel
     private lateinit var adapter: PlanAdapter
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_plan, container, false)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupDrawerTrigger(view)
 
-        // 1) Init ViewModel
+        // Init ViewModel
         val repo    = PlanRepository(FirebaseHelper(requireContext()))
         val factory = PlanViewModelFactory(repo)
         planViewModel = ViewModelProvider(this, factory)
             .get(PlanViewModel::class.java)
 
-        // 2) Setup RecyclerView & Adapter
-        adapter = PlanAdapter(emptyList()) { plan ->
-            showPlanOptions(plan)
-        }
-        view.findViewById<RecyclerView>(R.id.rvPlans).apply {
+        // RecyclerView + Adapter
+        adapter = PlanAdapter(emptyList()) { plan -> showPlanOptions(plan) }
+        view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvPlans).apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@PlanFragment.adapter
+            adapter       = this@PlanFragment.adapter
         }
 
-        // 3) Observe data
+        // Show loader until first page of plans arrives
+        showLoading()
         viewLifecycleOwner.lifecycleScope.launch {
             planViewModel.plansFlow.collect {
                 adapter.submitList(it)
+                hideLoading()
             }
         }
 
-        // 4) “Add Plan” button → open AddPlanFragment with isEdit=false
+        // Add Plan button
         view.findViewById<MaterialButton>(R.id.btnAddPlan).setOnClickListener {
-            val bundle = Bundle().apply {
-                putBoolean("isEdit", false)
-            }
             findNavController().navigate(
-                R.id.addPlanFragment,  // your fragment’s ID in nav_graph.xml
-                bundle
+                R.id.addPlanFragment,
+                Bundle().apply { putBoolean("isEdit", false) }
             )
         }
     }
+
 
     private fun showPlanOptions(plan: PlanModel) {
         val items = arrayOf("Edit Plan", "Delete Plan")

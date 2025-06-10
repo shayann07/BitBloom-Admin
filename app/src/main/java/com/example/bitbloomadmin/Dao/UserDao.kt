@@ -28,6 +28,8 @@ interface UserDao {
 
     @Query("DELETE FROM account_table")
     suspend fun clearAllAccounts()
+
+
 }
 
 

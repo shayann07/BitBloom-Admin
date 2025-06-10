@@ -1,8 +1,6 @@
 package com.example.bitbloomadmin
 
-import android.graphics.Color
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -12,14 +10,31 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.bitbloomadmin.databinding.ActivityMainBinding
 import com.google.firebase.FirebaseApp
 
+// WorkManager imports (must be these exact packages):
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.BackoffPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.ExistingPeriodicWorkPolicy
+
+// Your SyncWorker (ensure package matches where you placed it):
+import com.example.bitbloomadmin.workers.SyncWorker
+
+import java.util.concurrent.TimeUnit
+import java.util.Calendar
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Initialize Firebase
         FirebaseApp.initializeApp(this)
 
+        // Schedule the daily sync before setting the content view
+        setupDailySync()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -27,29 +42,24 @@ class MainActivity : AppCompatActivity() {
         // Force dark mode if desired
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-
-        // 2) NavController
+        // Set up Navigation
         val navController = findNavController(R.id.nav_host_fragment)
 
-
-
-
-        // 3) BottomNav <-> NavController
+        // BottomNav <-> NavController
         binding.bottomNavBar.setupWithNavController(navController)
-
-        // If you prefer manual navigation (you had it before), keep it:
         binding.bottomNavBar.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_dashboard   -> navController.navigate(R.id.dashboardFragment)
-                R.id.nav_users       -> navController.navigate(R.id.usersFragment)
-                R.id.nav_plans       -> navController.navigate(R.id.planFragment)
-                R.id.nav_reports     -> navController.navigate(R.id.reportFragment)
-                R.id.nav_withdrawals -> navController.navigate(R.id.withdrawFragment)
-                else                 -> false
-            }.let { true }
+                R.id.nav_dashboard    -> navController.navigate(R.id.dashboardFragment)
+                R.id.nav_users        -> navController.navigate(R.id.usersFragment)
+                R.id.nav_plans        -> navController.navigate(R.id.planFragment)
+                R.id.nav_reports      -> navController.navigate(R.id.reportFragment)
+                R.id.nav_withdrawals  -> navController.navigate(R.id.withdrawFragment)
+                else                  -> false
+            }
+            true
         }
 
-        // 4) DrawerToggle (hamburger icon)
+        // DrawerToggle (hamburger icon)
         toggle = ActionBarDrawerToggle(
             this,
             binding.drawerLayout,
@@ -59,26 +69,70 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // 5) NavigationView item clicks
+        // NavigationView item clicks
         binding.navView.setNavigationItemSelectedListener { menuItem ->
-            // close drawer first
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-
             when (menuItem.itemId) {
-                R.id.nav_dashboard        -> navController.navigate(R.id.dashboardFragment)
-                R.id.nav_users       -> navController.navigate(R.id.usersFragment)
-                R.id.nav_plans       -> navController.navigate(R.id.planFragment)
-                R.id.nav_reports     -> navController.navigate(R.id.reportFragment)
-                R.id.nav_withdrawals -> navController.navigate(R.id.withdrawFragment)
-                R.id.nav_announcements -> navController.navigate(R.id.annoucementFragment)
+                R.id.nav_dashboard       -> navController.navigate(R.id.dashboardFragment)
+                R.id.nav_users           -> navController.navigate(R.id.usersFragment)
+                R.id.nav_plans           -> navController.navigate(R.id.planFragment)
+                R.id.nav_reports         -> navController.navigate(R.id.reportFragment)
+                R.id.nav_withdrawals     -> navController.navigate(R.id.withdrawFragment)
+                R.id.nav_announcements   -> navController.navigate(R.id.annoucementFragment)
             }
             true
         }
     }
 
+    private fun setupDailySync() {
+        // 1) Build Constraints (only network requirement)
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        // 2) Build a PeriodicWorkRequest (every 24 hours),
+        //    delaying first run until next 2:00 AM local time
+        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+            24, TimeUnit.HOURS
+        )
+            .setInitialDelay(calculateDelayUntil(2, 0), TimeUnit.MILLISECONDS)
+            .setBackoffCriteria(
+                BackoffPolicy.EXPONENTIAL,
+                1L,
+                TimeUnit.MINUTES
+            )
+            .setConstraints(constraints)
+            .build()
+
+        // 3) Enqueue the unique periodic work
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "daily_sync",
+                ExistingPeriodicWorkPolicy.KEEP,
+                syncRequest
+            )
+    }
+    /**
+     * Compute milliseconds until the next occurrence of [hour:minute] local time.
+     * If it's already past that time today, schedule for tomorrow.
+     */
+    private fun calculateDelayUntil(hour: Int, minute: Int): Long {
+        val now = Calendar.getInstance()
+        val target = now.clone() as Calendar
+        target.set(Calendar.HOUR_OF_DAY, hour)
+        target.set(Calendar.MINUTE, minute)
+        target.set(Calendar.SECOND, 0)
+        target.set(Calendar.MILLISECOND, 0)
+
+        if (target.before(now)) {
+            target.add(Calendar.DAY_OF_YEAR, 1)
+        }
+        return target.timeInMillis - now.timeInMillis
+    }
+
     fun openDrawer() = binding.drawerLayout.openDrawer(GravityCompat.START)
+
     override fun onSupportNavigateUp(): Boolean {
-        // ensure the hamburger toggles/Back arrow behaves correctly
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }

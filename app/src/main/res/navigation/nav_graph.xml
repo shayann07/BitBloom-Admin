@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.bitbloomadmin.UI.DashboardFragment"
+        android:name="com.example.bitbloomadmin.ui.DashboardFragment"
         android:label="DashboardFragment">
         <action
             android:id="@+id/action_dashboardFragment_to_annoucementFragment"
@@ -24,17 +24,17 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="com.example.bitbloomadmin.UI.ReportFragment"
+        android:name="com.example.bitbloomadmin.ui.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_report" />
     <fragment
         android:id="@+id/annoucementFragment"
-        android:name="com.example.bitbloomadmin.UI.AnnoucementFragment"
+        android:name="com.example.bitbloomadmin.ui.AnnoucementFragment"
         android:label="fragment_annoucement"
         tools:layout="@layout/fragment_annoucement" />
     <fragment
         android:id="@+id/planFragment"
-        android:name="com.example.bitbloomadmin.UI.PlanFragment"
+        android:name="com.example.bitbloomadmin.ui.PlanFragment"
         android:label="fragment_plan"
         tools:layout="@layout/fragment_plan" >
         <action
@@ -43,12 +43,12 @@
     </fragment>
     <fragment
         android:id="@+id/withdrawFragment"
-        android:name="com.example.bitbloomadmin.UI.WithdrawFragment"
+        android:name="com.example.bitbloomadmin.ui.WithdrawFragment"
         android:label="fragment_withdraw"
         tools:layout="@layout/fragment_withdraw" />
     <fragment
         android:id="@+id/usersFragment"
-        android:name="com.example.bitbloomadmin.UI.UsersFragment"
+        android:name="com.example.bitbloomadmin.ui.UsersFragment"
         android:label="fragment_users"
         tools:layout="@layout/fragment_users">
         <action
@@ -57,12 +57,12 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.example.bitbloomadmin.UI.UserProfileFragment"
+        android:name="com.example.bitbloomadmin.ui.UserProfileFragment"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
     <fragment
         android:id="@+id/addPlanFragment"
-        android:name="com.example.bitbloomadmin.UI.AddPlanFragment"
+        android:name="com.example.bitbloomadmin.ui.AddPlanFragment"
         android:label="fragment_add_plan"
         tools:layout="@layout/fragment_add_plan"/>
 
