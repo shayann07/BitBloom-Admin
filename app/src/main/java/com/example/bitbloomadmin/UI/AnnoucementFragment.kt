@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,10 @@ import com.example.bitbloomadmin.adapter.AnnouncementAdapter
 import com.example.bitbloomadmin.databinding.DialogAddAnnouncementBinding
 import com.example.bitbloomadmin.databinding.FragmentAnnoucementBinding
 import com.example.bitbloomadmin.models.AnnouncementModel
+import com.example.bitbloomadmin.models.UserModel
+import com.example.bitbloomadmin.notifications.AccessToken
+import com.example.bitbloomadmin.notifications.Fcm
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class AnnoucementFragment : BaseFragment() {
@@ -30,6 +35,8 @@ class AnnoucementFragment : BaseFragment() {
 
     private lateinit var viewModel: UserViewModel
     private lateinit var announcementAdapter: AnnouncementAdapter
+    private lateinit var usersList : MutableList<UserModel>
+    private var firestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -48,6 +55,8 @@ class AnnoucementFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupDrawerTrigger(view)
 
+        usersList = ArrayList()
+        getAllUsers()
         // RecyclerView + Adapter
         announcementAdapter = AnnouncementAdapter()
         binding.rvAnnouncements.apply {
@@ -99,6 +108,7 @@ class AnnoucementFragment : BaseFragment() {
                     showLoading()
                     try {
                         viewModel.addAnnouncement(announcement)
+                        sendNotification()
                         viewModel.fetchAnnouncements()
                     } finally {
                         hideLoading()
@@ -108,6 +118,42 @@ class AnnoucementFragment : BaseFragment() {
                 }
             }
         }
+    }
+    private fun sendNotification() {
+        AccessToken.getAccessTokenAsync(object : AccessToken.AccessTokenCallback {
+            override fun onAccessTokenReceived(token: String?) {
+                if (token != null) {
+                    val fcm = Fcm()
+                    for (user in usersList){
+                        Log.d("Notifications", "showNotification: ${user.id}")
+                        fcm.sendFCMNotification(
+                            user.deviceToken!!,
+                            "BitBloom Admin",
+                            "New Announcement Alert!",
+                            "notification",
+                            token
+                        )
+                    }
+                }
+            }
+        })
+
+    }
+    private fun getAllUsers(){
+        firestore.collection("users")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val user = document.toObject(UserModel::class.java)
+                    usersList.add(user)
+
+                        Log.d("Users", "getAllUsers: ${usersList.size}")
+
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(requireContext(), exception.localizedMessage, Toast.LENGTH_LONG).show()
+            }
     }
 
     override fun onDestroyView() {

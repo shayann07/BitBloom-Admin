@@ -30,6 +30,8 @@ import com.example.bitbloomadmin.Viewmodel.UserViewModelFactory
 import com.example.bitbloomadmin.notifications.AccessToken
 import com.example.bitbloomadmin.notifications.Fcm
 import com.google.firebase.firestore.FirebaseFirestore
+import androidx.appcompat.widget.SearchView
+
 import kotlinx.coroutines.launch
 
 class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
@@ -41,7 +43,12 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
     private lateinit var userViewModel: UserViewModel
     private lateinit var adapter: WithdrawAdapter
     private val firestore = FirebaseFirestore.getInstance()
-    private lateinit var deviceToken : String
+
+    // New: full and filtered lists for search
+    private var allWithdrawals: List<WithdrawWithUserName> = emptyList()
+    private var filteredWithdrawals: List<WithdrawWithUserName> = emptyList()
+
+    private lateinit var deviceToken: String
     private var cachedUserList: List<UserWithAccount> = emptyList()
     private var isDataLoaded = false
 
@@ -70,6 +77,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
         super.onViewCreated(view, savedInstanceState)
         setupDrawerTrigger(view)
 
+        // Recycler setup
         adapter = WithdrawAdapter(handler = this)
         binding.recyclerViewWithdraws.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewWithdraws.adapter = adapter
@@ -85,7 +93,10 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
         showLoading()
         lifecycleScope.launch {
             viewModel.withdrawsWithNames.collect { list ->
-                adapter.update(list)
+                // Store full list and initialize filtered list
+                allWithdrawals = list
+                filteredWithdrawals = list
+                adapter.update(filteredWithdrawals)
                 if (!isDataLoaded) {
                     isDataLoaded = true
                     hideLoading()
@@ -95,24 +106,47 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
 
         // Trigger data load
         viewModel.refreshData()
+
+        // Wire up the SearchView
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return onQueryTextChange(query)
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val q = newText.orEmpty().trim()
+                filteredWithdrawals = if (q.isEmpty()) {
+                    allWithdrawals
+                } else {
+                    allWithdrawals.filter {
+                        it.userName.contains(q, true) ||
+                                it.withdraw.transactionId.contains(q, true) ||
+                                it.withdraw.address.contains(q, true)
+                    }
+                }
+                adapter.update(filteredWithdrawals)
+                return true
+            }
+        })
     }
 
     override fun onConfirm(withdraw: WithdrawWithUserName) {
         val txId = withdraw.withdraw.transactionId
-        val matchedUser = cachedUserList.find { user ->
-            user.userId?.trim() == withdraw.withdraw.userId.trim()
-        }
-        deviceToken = matchedUser?.deviceToken.toString()
-        if (true) {
-            Log.d("DeviceToken", deviceToken)
-        } else {
-            Log.d("DeviceToken", "No matching user found or device token is null")
-        }
+        val amount = withdraw.withdraw.amount
+
+        val matchedUser = cachedUserList.find { it.userId?.trim() == withdraw.withdraw.userId.trim() }
+        deviceToken = matchedUser?.deviceToken.orEmpty()
+        Log.d("DeviceToken", deviceToken)
+
         firestore.collection("withdraw_requests").document(txId)
             .update("status", "approved")
             .addOnSuccessListener {
-                sendNotification(deviceToken,"Withdrawal Approved","approved")
+                sendNotification(
+                    deviceToken,
+                    "Your request for withdraw of $$amount is Approved",
+                    "approved"
+                )
                 Toast.makeText(requireContext(), "Withdrawal approved", Toast.LENGTH_SHORT).show()
+                viewModel.refreshData()  // refresh list to reflect change
             }
             .addOnFailureListener {
                 Toast.makeText(requireContext(), "Failed to approve: ${it.message}", Toast.LENGTH_SHORT).show()
@@ -121,28 +155,31 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
 
     override fun onReject(withdraw: WithdrawWithUserName) {
         val txId = withdraw.withdraw.transactionId
+        val amount = withdraw.withdraw.amount
 
-        val matchedUser = cachedUserList.find { user ->
-            user.userId?.trim() == withdraw.withdraw.userId.trim()
-        }
-        deviceToken = matchedUser?.deviceToken.toString()
-        if (true) {
-            Log.d("DeviceToken", deviceToken)
-        } else {
-            Log.d("DeviceToken", "No matching user found or device token is null")
-        }
+        val matchedUser = cachedUserList.find { it.userId?.trim() == withdraw.withdraw.userId.trim() }
+        deviceToken = matchedUser?.deviceToken.orEmpty()
+        Log.d("DeviceToken", deviceToken)
+
         firestore.collection("withdraw_requests").document(txId)
             .update("status", "rejected")
             .addOnSuccessListener {
-                sendNotification(deviceToken,"Withdrawal Rejected","rejected")
+                sendNotification(
+                    deviceToken,
+                    "Your request for withdraw of $$amount is Rejected",
+                    "rejected"
+                )
                 Toast.makeText(requireContext(), "Withdrawal rejected", Toast.LENGTH_SHORT).show()
+                viewModel.refreshData()  // refresh list to reflect change
             }
             .addOnFailureListener {
                 Toast.makeText(requireContext(), "Failed to reject: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
-    override fun onBlock(withdraw: WithdrawWithUserName) { /* unchanged */ }
+    override fun onBlock(withdraw: WithdrawWithUserName) {
+        // unchanged
+    }
 
     override fun onCopy(withdraw: WithdrawWithUserName) {
         val clipboard = requireContext()
@@ -157,38 +194,37 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
         val matched = cachedUserList.firstOrNull { it.userId.trim() == rawUserId }
         if (matched != null) {
             val bundle = bundleOf(
-                "userId"                 to matched.userId,
-                "name"                   to matched.name,
-                "email"                  to matched.email,
-                "password"               to matched.password,
-                "phone"                  to matched.phone,
-                "referalCode"            to matched.referalCode,
-                "accountId"              to matched.accountId,
-                "totalDeposit"           to matched.totalDeposit,
-                "currentBalance"         to matched.currentBalance,
-                "withdraw"               to matched.withdraw,
-                "totalEarned"            to matched.totalEarned,
-                "lifetime_referral_income" to matched.lifetime_referral_income,
-                "lifetime_roi_income"    to matched.lifetime_roi_income,
-                "lifetime_team_income"   to matched.lifetime_team_income
+                "userId"                    to matched.userId,
+                "name"                      to matched.name,
+                "email"                     to matched.email,
+                "password"                  to matched.password,
+                "phone"                     to matched.phone,
+                "referalCode"               to matched.referalCode,
+                "accountId"                 to matched.accountId,
+                "totalDeposit"              to matched.totalDeposit,
+                "currentBalance"            to matched.currentBalance,
+                "withdraw"                  to matched.withdraw,
+                "totalEarned"               to matched.totalEarned,
+                "lifetime_referral_income"  to matched.lifetime_referral_income,
+                "lifetime_roi_income"       to matched.lifetime_roi_income,
+                "lifetime_team_income"      to matched.lifetime_team_income
             )
             findNavController().navigate(R.id.userProfileFragment, bundle)
         } else {
             Toast.makeText(requireContext(), "No matching user for '$rawUserId'", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun sendNotification(deviceToken: String, notification: String,type:String) {
+
+    private fun sendNotification(deviceToken: String, notification: String, type: String) {
         AccessToken.getAccessTokenAsync(object : AccessToken.AccessTokenCallback {
             override fun onAccessTokenReceived(token: String?) {
-                if (token != null) {
-                    val fcm = Fcm()
-                    fcm.sendFCMNotification(
-                        deviceToken!!,
+                token?.let {
+                    Fcm().sendFCMNotification(
+                        deviceToken,
                         "Admin BitBloom",
                         "$notification!",
-                        type
-                        ,
-                        token
+                        type,
+                        it
                     )
                 }
             }

@@ -40,6 +40,7 @@ class UserRepository(
                     phone                   = user.phoneNumber,
                     password                = user.password,
                     referalCode             = user.referralCode,
+                    deviceToken             = user.deviceToken,
                     accountId               = acc.accountId,
                     totalDeposit            = acc.investment.total_deposit,
                     currentBalance          = acc.investment.remaining_balance,
