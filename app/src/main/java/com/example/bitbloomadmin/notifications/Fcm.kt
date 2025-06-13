@@ -1,5 +1,6 @@
 package com.example.bitbloomadmin.notifications
 
+import android.util.Log
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -11,42 +12,57 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 
-class Fcm  {
-    @OptIn(DelicateCoroutinesApi::class)
-    fun sendFCMNotification(targetDeviceToken: String, title: String, body: String,type:String, accessToken: String) {
-        val url = "https://fcm.googleapis.com/v1/projects/aitrustledger-3fe07/messages:send" // Replace with your project ID
+class Fcm {
+    companion object {
+        private const val TAG = "Fcm"
+    }
 
+    @OptIn(DelicateCoroutinesApi::class)
+    fun sendFCMNotification(
+        targetDeviceToken: String,
+        title: String,
+        body: String,
+        type: String,
+        accessToken: String
+    ) {
+        // Ensure this matches your service-account’s project ID
+        val url = "https://fcm.googleapis.com/v1/projects/investment-app-11ac4/messages:send"
         val client = OkHttpClient()
 
-        // Build the JSON payload
-        val json = JSONObject().apply {
-            put("message", JSONObject().apply {
-                put("token", targetDeviceToken)
-                put("data", JSONObject().apply {
-                    put("title", title)
-                    put("body", body)
-                    put("type", type)
-                })
+        // Build a data-only message per HTTP v1 spec
+        val messageJson = JSONObject().apply {
+            put("token", targetDeviceToken)
+            put("android", JSONObject().put("priority", "HIGH"))
+            put("data", JSONObject().apply {
+                put("title", title)
+                put("body", body)
+                put("type", type)
             })
         }
 
-        val requestBody = json.toString().toRequestBody("application/json".toMediaType())
+        val wrapper = JSONObject().put("message", messageJson)
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val requestBody = wrapper.toString().toRequestBody(mediaType)
+
         val request = Request.Builder()
             .url(url)
-            .addHeader("Authorization", "Bearer $accessToken") // Use the access token
+            .addHeader("Authorization", "Bearer $accessToken")
+            .addHeader("Content-Type", "application/json; charset=utf-8")
             .post(requestBody)
             .build()
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val response = client.newCall(request).execute()
-                if (!response.isSuccessful) {
-                    println("Failed to send notification: ${response.code} ${response.message}")
-                } else {
-                    println("Notification sent successfully")
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        val errorBody = response.body?.string()
+                        Log.e(TAG, "HTTP ${response.code} – $errorBody")
+                    } else {
+                        Log.d(TAG, "Data-only notification sent successfully")
+                    }
                 }
             } catch (e: IOException) {
-                println("Error sending notification: ${e.message}")
+                Log.e(TAG, "Error sending data-only notification", e)
             }
         }
     }
