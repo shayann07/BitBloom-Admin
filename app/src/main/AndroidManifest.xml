@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bitbloomadmin">
 
@@ -8,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BitBloomAdmin">
-
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
         <!-- LAUNCHER is now only on SplashActivity -->
         <activity
             android:name=".UI.SplashActivity"
@@ -16,17 +19,14 @@
             android:theme="@style/Theme.BitBloomAdmin.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- MainActivity becomes a normal screen -->
+        </activity> <!-- MainActivity becomes a normal screen -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.BitBloomAdmin" />
-
-        <!-- Your other activities/fragments here -->
     </application>
 
 </manifest>

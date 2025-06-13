@@ -24,20 +24,24 @@ class AccessToken {
 
         override fun doInBackground(vararg params: Void?): String? {
             return try {
-                val jsonString = "{\n" +
-                        "  \"type\": \"service_account\",\n" +
-                        "  \"project_id\": \"aitrustledger-3fe07\",\n" +
-                        "  \"private_key_id\": \"893588cc375c86effd5794c5a82192ecf9d036e1\",\n" +
-                        "  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDQIIL2wdunHPOJ\\n9iXDQOs/B4mCXzOly2tkN0i/wcqJsC3aDgIh9Enyndwvg8CzCBDijd+h6daXEtAH\\ny2cX0J8Jgnat1KR7ezQxMv6kllwTz1jiAW/ljoCvFQjVnPhUkR5j3B6hNVHLG5jA\\nNEejiSxjvnd7NUyYz1YXz1beO9pTjb7AYyixfAwufk0p5opgMJOERUrv6bhR+vFD\\nBUVQpb9X2v63CFM83tGSbcm2ZZ6J7GVN/bnloOIqRo6Ua63d3AWe7EbeOFtjSYGn\\n9wTM6LA01i9c5HIWpaR/tIJ7NvBdnQdCMeWaNVYNrG3VzVoIZqT0IJOeKGeLG413\\ngyAP6CITAgMBAAECggEATsRvLDpUChv/46+/vPS9033jwe6L2mxxOV1e8AvEvnVp\\n9QOmNPmCXwr1gRoI/PjJgySUhW+9YjGhf8GwQ6gV+IBisAkxMvZ+2zvkeZ/aOzkW\\n93n5wlQ7SYfZbxbYOREvAjYVdYd7bDYGin9+uVq57QnxqDSUx6R4fcxfoP3f9Ayb\\nVOjZK248s1fBZ1fPxer/W5Cu8affz1XwAj+gKh0JH4WXlXhXLVNlgi9nrUtl4eVj\\n4RMzm1zDPgkeWFIw3U1EgAW8QCJICFS6aUQg7VAz07JqFQiHC0klghmsNg1yprYS\\nXU1fDzd5b61eYEOOWRYfdapGzEJvFogup+z8SLue8QKBgQDvkE9QNccAjdre8p44\\npA6DR55qrKKklZ48zuhU3Ntuiv3w2+r5pYvNpzn0SJuMcSkkRMo7+5v8THR5uBw0\\nLlbeMbYqu+GZ3WvUycLCesAXdS+6ZG4DxjOqr0lWbXpSRfGheHbII0PG694Ivuxt\\nrdqwQNTxxlzw4UVS+p2LaLOyewKBgQDeaAxZ/g+6L6qtwMfzoLYumLJziM3T3X8H\\ntBlIACNAidRSOUmKCvqtPpmH/bLrCauMWzFmYCyGjRK4VevSKlJtPLLcbAHPRmHC\\nkEB6P2dEL98fkTZIdSARYAxl/XlQsO8QQFNkbZOeMHbryVsUidBEYhxN2kzroAdd\\ny8lUOvSnSQKBgQDHn/YnfZiFYq+2xm+H/VVGmeBtPcwN38tLGpNJW/zSIao4Edm9\\nC/Dyft3xLKvJnOZOna/zydeSptcMMpn19YNXhg8pjwQQJg1b9ICBdK4rHfCWnmd6\\nZ6fYHFa9WV7rvfL6vZolbhVlZljP6uCzCINKCcwoaEY8R0twOPwdFjNfjwKBgQCb\\nV5Ng/ApiIk8Vg3Rln1gAXdkux1v0Yl4KtGmAF9CHkH2DXM4XpCmI/hNgn/vrHNr8\\ncumjNwOCi2CK7kCDj9n4wI+xU6ND8kXwDq9qc4SeZM10kAmZPG3ElRCz4AJvMNYZ\\nxMQ6firAL9uwPvjl9IhKaziXzCUz4peilOcvdOpTOQKBgHWIC0+CBiSfVJ/2V/t1\\nrZIeMFg1cRZm3A8zgn68khjlRRW2rutAdRVfgK+MOKf9f1J1FxnCl9PMu+owm8mO\\nyXVT8vUHMFR8kJi4+8dxvOuNH770ww+pluXtdpnAxwLpSpj4SKpmrImF2t4odO8L\\nn5MwjE9DAFEIARMoQs3iMWa5\\n-----END PRIVATE KEY-----\\n\",\n" +
-                        "  \"client_email\": \"firebase-adminsdk-fbsvc@aitrustledger-3fe07.iam.gserviceaccount.com\",\n" +
-                        "  \"client_id\": \"111587825525969513663\",\n" +
-                        "  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n" +
-                        "  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n" +
-                        "  \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n" +
-                        "  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40aitrustledger-3fe07.iam.gserviceaccount.com\",\n" +
-                        "  \"universe_domain\": \"googleapis.com\"\n" +
-                        "}\n"
-                val stream: InputStream = ByteArrayInputStream(jsonString.toByteArray(StandardCharsets.UTF_8))
+                val jsonString = """
+               {
+  "type": "service_account",
+  "project_id": "investment-app-11ac4",
+  "private_key_id": "f6c072068c8228d3049b0d506badccae3798cef9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDSlD46MbS5kavY\nSK6LmIBGIOycQhxTQEips6giEtOpn818RSKY7uQTsiKuygG7GD3NHsxXX1OLqXyQ\nun9MCawwsfaA9rmN36wy26tyFZv+xlZiPxwq8sM7/a8stWp9oXaUCbsx+7TUoCtT\ntreBF2nyRRi6LFGI97xzWx/NFt1ZJnZmKxSs+wKeGx7lS23aulABA0MfBZ+vMrgV\nVdRn/tF9dqtIJFN20riHKSkur3RXzvrTcv5Y7nwbRBh3m5GmJUk4HFdc9ZP9tawl\nPqZa2xIp24t4UMBVQnC7CwC9j22TdRNaVwAiYZ/29uRelv5L0r/LB5FLLazu2iSE\n7aEZpUHBAgMBAAECggEAB9utl0sZzwd5OdLbhZzRI5zQq5OZfj9Svtd0FaJteOHc\nX4/uZrXad8Qw4GQsLJzO2JfWwQdvBRIT8owtGiutu+r2M5GRctKHGOZC53jYN4mT\n+WpYvR8OS0+wEOtrsAi9lbBnxomZscoQ19jEkAoNQ3PR5IepGsMA6q6auRLqe2w/\nPkundhSq2SLtbqhdwkazRBv+BIjQN4tVoNiqNiyR1gKu5RHgfhu85qoylNu8oosG\no0Fjc/qQ7Vvb2ed0b1AcW7Gg2goTE9gm8RcupswliFrTw4ibr0WOzVbJzd8SUsHs\nZPRl2d0mSq8kBVIw8JYUwEjABUjaeGJNCOY/Q2fPWQKBgQD+JdOkpnqflx3b1myO\nyBSr1DWViPLXBopT/Rd3f0EtrwU5gCn0v7wzFZRmBGEGZquna1DmFAsfFtJCPN4d\nYV0FSizTPM1G4o4fZfkEYwsoqdaTK5+n/KbzcdNEQMwn6bAewOVZ3HGKXufAW5B0\nkxRYQ9QhydVluMfQenne7gh5GQKBgQDUHSDp1NhZUBpyTDFnlSF+4LCDJm1a7uqo\n0nwx00q3hDmwFvROJtG/Z89G69VYaidS6AGSI8g5ANsROf0F2+rolIevZFKhdTRr\n1xYIInZ/KVXpb90Mr+9J2SOEyFo1arpoDrd545gPpRKCFLhKfnnU/q0aeluWi14p\neAGQuIaa6QKBgAlee57mRD794yvni7j3x0tOV2tb0Rf8Nb1C50qQdmaovRiRkPpk\n1xtLAF2Ca9FAl7NkUWcp9f7/aGDovYd3v2YiheSDqU2jrHmb2MJApHirSi3CvfAD\ncGQpHhC2EtCl3MhFdC8L4WOofAKrXXfutCFM3tUgC63kUfltinCdddKBAoGAHrE0\nUQF+aLYBjaZew7k9holmoSOPUUge5lzGocMMHa/hVQyNPz24vfR8dqurTEbX99Qg\nXhAVacIo8L4uUYm33P2ZAJUIq9o0wqH1yymJce7+Qm/wUWSnwEzOKel/vBj8bhAr\nFlULbMAbBH2RCR5x7JMJYzpvREJYVrHJsDIzL/kCgYEAibunyvbFgbcws9gQd/Qn\nGEFLRNbam8Z8UJiJh/WnYX8h9jeX/QswH8cG/+XfOEbvEvnSbBLI+SiZJ1fTaH0Y\nKHYBhNjwRUkmmELOgCTA/nL7mnXIlTEKLGm54NapCAnyzAKnHJu+sgRI1G9Fv8c1\npk9CKXz2sh67p7t8kdhc9mo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@investment-app-11ac4.iam.gserviceaccount.com",
+  "client_id": "116086274382549132254",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40investment-app-11ac4.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
+            """
+                val stream: InputStream =
+                    ByteArrayInputStream(jsonString.toByteArray(StandardCharsets.UTF_8))
                 val googleCredentials = GoogleCredentials
                     .fromStream(stream)
                     .createScoped(Lists.newArrayList(FIREBASE_MESSAGING_SCOPE))

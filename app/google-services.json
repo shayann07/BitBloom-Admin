@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "268816752522",
-    "project_id": "bitbloom-dummy",
-    "storage_bucket": "bitbloom-dummy.firebasestorage.app"
+    "project_number": "240388129664",
+    "project_id": "investment-app-11ac4",
+    "storage_bucket": "investment-app-11ac4.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:268816752522:android:d4d036c174c5a46cefb273",
+        "mobilesdk_app_id": "1:240388129664:android:a1b8b16de67212c0e57765",
         "android_client_info": {
-          "package_name": "com.codingEmpire.bitbloom"
+          "package_name": "com.bitbloom.bitbloomadmin"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAu0pqZDpsS2Y4bpUgvsZPhh-YRcW9Cb_E"
+          "current_key": "AIzaSyCJkuJ-BpMrZTsywVGOiikD6obtUIVFV2o"
         }
       ],
       "services": {
@@ -26,7 +26,26 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:268816752522:android:833e9b78d59357bdefb273",
+        "mobilesdk_app_id": "1:240388129664:android:47d1803157fe3947e57765",
+        "android_client_info": {
+          "package_name": "com.codingEmpire.bitbloom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJkuJ-BpMrZTsywVGOiikD6obtUIVFV2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240388129664:android:8fd3e5c4da4f07a7e57765",
         "android_client_info": {
           "package_name": "com.example.bitbloomadmin"
         }
@@ -34,7 +53,45 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAu0pqZDpsS2Y4bpUgvsZPhh-YRcW9Cb_E"
+          "current_key": "AIzaSyCJkuJ-BpMrZTsywVGOiikD6obtUIVFV2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240388129664:android:28483170e8bfc9b6e57765",
+        "android_client_info": {
+          "package_name": "com.example.investment_super_admin_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJkuJ-BpMrZTsywVGOiikD6obtUIVFV2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240388129664:android:9e6d4d696d43d14be57765",
+        "android_client_info": {
+          "package_name": "com.mubashir.investment_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJkuJ-BpMrZTsywVGOiikD6obtUIVFV2o"
         }
       ],
       "services": {

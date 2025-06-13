@@ -33,8 +33,7 @@ class AddPlanFragment : BaseFragment() {
         // Obtain ViewModel
         val repo    = PlanRepository(FirebaseHelper(requireContext()))
         val factory = PlanViewModelFactory(repo)
-        viewModel   = ViewModelProvider(requireActivity(), factory)
-            .get(PlanViewModel::class.java)
+        viewModel   = ViewModelProvider(requireActivity(), factory)[PlanViewModel::class.java]
 
         // Inputs
         val etName     = view.findViewById<TextInputEditText>(R.id.etPlanName)
@@ -66,8 +65,8 @@ class AddPlanFragment : BaseFragment() {
                 directProfit  = etDirect.text.toString().toDoubleOrNull() ?: 0.0
             )
 
-            // Show loader around network call
-            showLoading()
+            /*// Show loader around network call
+            showLoading()*/
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     if (isEditMode) viewModel.updatePlan(plan)

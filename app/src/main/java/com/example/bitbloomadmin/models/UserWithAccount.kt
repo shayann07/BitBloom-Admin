@@ -4,6 +4,7 @@ data class UserWithAccount(
     val userId: String = "",
     val email: String = "",
     val password: String = "",
+    val deviceToken: String = "",
     val referalCode: String = "",
     val phone: String = "",
     val accountId: String = "",

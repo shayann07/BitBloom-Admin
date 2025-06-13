@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ import com.example.bitbloomadmin.models.WithdrawWithUserName
 import com.example.bitbloomadmin.Repository.UserRepository
 import com.example.bitbloomadmin.Viewmodel.UserViewModel
 import com.example.bitbloomadmin.Viewmodel.UserViewModelFactory
+import com.example.bitbloomadmin.notifications.AccessToken
+import com.example.bitbloomadmin.notifications.Fcm
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
@@ -38,7 +41,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
     private lateinit var userViewModel: UserViewModel
     private lateinit var adapter: WithdrawAdapter
     private val firestore = FirebaseFirestore.getInstance()
-
+    private lateinit var deviceToken : String
     private var cachedUserList: List<UserWithAccount> = emptyList()
     private var isDataLoaded = false
 
@@ -96,9 +99,19 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
 
     override fun onConfirm(withdraw: WithdrawWithUserName) {
         val txId = withdraw.withdraw.transactionId
+        val matchedUser = cachedUserList.find { user ->
+            user.userId?.trim() == withdraw.withdraw.userId.trim()
+        }
+        deviceToken = matchedUser?.deviceToken.toString()
+        if (true) {
+            Log.d("DeviceToken", deviceToken)
+        } else {
+            Log.d("DeviceToken", "No matching user found or device token is null")
+        }
         firestore.collection("withdraw_requests").document(txId)
             .update("status", "approved")
             .addOnSuccessListener {
+                sendNotification(deviceToken,"Withdrawal Approved","approved")
                 Toast.makeText(requireContext(), "Withdrawal approved", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
@@ -108,9 +121,20 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
 
     override fun onReject(withdraw: WithdrawWithUserName) {
         val txId = withdraw.withdraw.transactionId
+
+        val matchedUser = cachedUserList.find { user ->
+            user.userId?.trim() == withdraw.withdraw.userId.trim()
+        }
+        deviceToken = matchedUser?.deviceToken.toString()
+        if (true) {
+            Log.d("DeviceToken", deviceToken)
+        } else {
+            Log.d("DeviceToken", "No matching user found or device token is null")
+        }
         firestore.collection("withdraw_requests").document(txId)
             .update("status", "rejected")
             .addOnSuccessListener {
+                sendNotification(deviceToken,"Withdrawal Rejected","rejected")
                 Toast.makeText(requireContext(), "Withdrawal rejected", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
@@ -152,6 +176,23 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
         } else {
             Toast.makeText(requireContext(), "No matching user for '$rawUserId'", Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun sendNotification(deviceToken: String, notification: String,type:String) {
+        AccessToken.getAccessTokenAsync(object : AccessToken.AccessTokenCallback {
+            override fun onAccessTokenReceived(token: String?) {
+                if (token != null) {
+                    val fcm = Fcm()
+                    fcm.sendFCMNotification(
+                        deviceToken!!,
+                        "Admin BitBloom",
+                        "$notification!",
+                        type
+                        ,
+                        token
+                    )
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {
