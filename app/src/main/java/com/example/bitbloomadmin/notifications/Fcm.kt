@@ -25,14 +25,25 @@ class Fcm {
         type: String,
         accessToken: String
     ) {
-        // Ensure this matches your service-account’s project ID
         val url = "https://fcm.googleapis.com/v1/projects/investment-app-11ac4/messages:send"
         val client = OkHttpClient()
 
-        // Build a data-only message per HTTP v1 spec
         val messageJson = JSONObject().apply {
             put("token", targetDeviceToken)
-            put("android", JSONObject().put("priority", "HIGH"))
+
+            put("notification", JSONObject().apply {
+                put("title", title)
+                put("body", body)
+                put("sound", type) // Will play res/raw/{type}.mp3 (e.g. profit, rejected, approved)
+            })
+
+            put("android", JSONObject().apply {
+                put("priority", "HIGH")
+                put("notification", JSONObject().apply {
+                    put("sound", type) // Optional for Android-specific config
+                })
+            })
+
             put("data", JSONObject().apply {
                 put("title", title)
                 put("body", body)
@@ -58,12 +69,13 @@ class Fcm {
                         val errorBody = response.body?.string()
                         Log.e(TAG, "HTTP ${response.code} – $errorBody")
                     } else {
-                        Log.d(TAG, "Data-only notification sent successfully")
+                        Log.d(TAG, "Notification sent successfully")
                     }
                 }
             } catch (e: IOException) {
-                Log.e(TAG, "Error sending data-only notification", e)
+                Log.e(TAG, "Error sending notification", e)
             }
         }
     }
+
 }
