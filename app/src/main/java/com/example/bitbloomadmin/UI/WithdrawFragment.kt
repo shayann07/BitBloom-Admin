@@ -143,7 +143,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
                 sendNotification(
                     deviceToken,
                     "Your request for withdraw of $$amount is Approved",
-                    "approved"
+
                 )
                 Toast.makeText(requireContext(), "Withdrawal approved", Toast.LENGTH_SHORT).show()
                 viewModel.refreshData()  // refresh list to reflect change
@@ -167,7 +167,6 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
                 sendNotification(
                     deviceToken,
                     "Your request for withdraw of $$amount is Rejected",
-                    "rejected"
                 )
                 Toast.makeText(requireContext(), "Withdrawal rejected", Toast.LENGTH_SHORT).show()
                 viewModel.refreshData()  // refresh list to reflect change
@@ -215,7 +214,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
         }
     }
 
-    private fun sendNotification(deviceToken: String, notification: String, type: String) {
+    private fun sendNotification(deviceToken: String, notification: String, ) {
         AccessToken.getAccessTokenAsync(object : AccessToken.AccessTokenCallback {
             override fun onAccessTokenReceived(token: String?) {
                 token?.let {
@@ -223,7 +222,6 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
                         deviceToken,
                         "Admin BitBloom",
                         "$notification!",
-                        type,
                         it
                     )
                 }
