@@ -130,7 +130,6 @@ class AnnoucementFragment : BaseFragment() {
                             user.deviceToken!!,
                             "BitBloom Admin",
                             "New Announcement Alert!",
-                            "notification",
                             token
                         )
                     }

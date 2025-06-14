@@ -22,60 +22,53 @@ class Fcm {
         targetDeviceToken: String,
         title: String,
         body: String,
-        type: String,
+
         accessToken: String
     ) {
         val url = "https://fcm.googleapis.com/v1/projects/investment-app-11ac4/messages:send"
         val client = OkHttpClient()
 
+        // Simple notification with title and body
         val messageJson = JSONObject().apply {
             put("token", targetDeviceToken)
 
             put("notification", JSONObject().apply {
                 put("title", title)
                 put("body", body)
-                put("sound", type) // Will play res/raw/{type}.mp3 (e.g. profit, rejected, approved)
             })
 
             put("android", JSONObject().apply {
                 put("priority", "HIGH")
-                put("notification", JSONObject().apply {
-                    put("sound", type) // Optional for Android-specific config
-                })
             })
 
             put("data", JSONObject().apply {
                 put("title", title)
                 put("body", body)
-                put("type", type)
             })
         }
 
-        val wrapper = JSONObject().put("message", messageJson)
-        val mediaType = "application/json; charset=utf-8".toMediaType()
-        val requestBody = wrapper.toString().toRequestBody(mediaType)
+        val json = JSONObject().put("message", messageJson)
+        val requestBody = json.toString().toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
             .url(url)
             .addHeader("Authorization", "Bearer $accessToken")
-            .addHeader("Content-Type", "application/json; charset=utf-8")
+            .addHeader("Content-Type", "application/json")
             .post(requestBody)
             .build()
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) {
-                        val errorBody = response.body?.string()
-                        Log.e(TAG, "HTTP ${response.code} – $errorBody")
-                    } else {
-                        Log.d(TAG, "Notification sent successfully")
-                    }
+                val response = client.newCall(request).execute()
+                val responseBody = response.body?.string()
+                if (!response.isSuccessful) {
+                    Log.e(TAG, "❌ FCM Error: ${response.code} – $responseBody")
+                } else {
+                    Log.d(TAG, "✅ Notification sent successfully")
                 }
             } catch (e: IOException) {
-                Log.e(TAG, "Error sending notification", e)
+                Log.e(TAG, "❌ Error sending notification: ${e.message}")
             }
         }
     }
-
 }
