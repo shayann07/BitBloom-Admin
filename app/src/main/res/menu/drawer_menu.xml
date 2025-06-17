@@ -10,7 +10,7 @@
         android:title="Plans" />
     <item
         android:id="@+id/nav_dashboard"
-        android:icon="@drawable/dashboard"
+        android:icon="@drawable/users"
         android:title="Dashboard" />
 
     <item

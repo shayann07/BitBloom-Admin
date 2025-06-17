@@ -94,8 +94,8 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
         lifecycleScope.launch {
             viewModel.withdrawsWithNames.collect { list ->
                 // Store full list and initialize filtered list
-                allWithdrawals = list
-                filteredWithdrawals = list
+                allWithdrawals = list.filter { it.withdraw.status.equals("pending", true) }
+                filteredWithdrawals = allWithdrawals
                 adapter.update(filteredWithdrawals)
                 if (!isDataLoaded) {
                     isDataLoaded = true
@@ -132,6 +132,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
     override fun onConfirm(withdraw: WithdrawWithUserName) {
         val txId = withdraw.withdraw.transactionId
         val amount = withdraw.withdraw.amount
+        val name = withdraw.userName
 
         val matchedUser = cachedUserList.find { it.userId?.trim() == withdraw.withdraw.userId.trim() }
         deviceToken = matchedUser?.deviceToken.orEmpty()
@@ -142,7 +143,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
             .addOnSuccessListener {
                 sendNotification(
                     deviceToken,
-                    "Your request for withdraw of $$amount is Approved",
+                    "Hi ${name}Your request for withdraw of $$amount is Approved",
 
                 )
                 Toast.makeText(requireContext(), "Withdrawal approved", Toast.LENGTH_SHORT).show()
@@ -156,7 +157,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
     override fun onReject(withdraw: WithdrawWithUserName) {
         val txId = withdraw.withdraw.transactionId
         val amount = withdraw.withdraw.amount
-
+        val name = withdraw.userName
         val matchedUser = cachedUserList.find { it.userId?.trim() == withdraw.withdraw.userId.trim() }
         deviceToken = matchedUser?.deviceToken.orEmpty()
         Log.d("DeviceToken", deviceToken)
@@ -166,7 +167,7 @@ class WithdrawFragment : BaseFragment(), WithdrawAdapter.WithdrawHandler {
             .addOnSuccessListener {
                 sendNotification(
                     deviceToken,
-                    "Your request for withdraw of $$amount is Rejected",
+                    "Dear $name ,Your request for withdraw of $$amount is Rejected",
                 )
                 Toast.makeText(requireContext(), "Withdrawal rejected", Toast.LENGTH_SHORT).show()
                 viewModel.refreshData()  // refresh list to reflect change

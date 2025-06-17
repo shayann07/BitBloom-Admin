@@ -80,6 +80,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -125,6 +126,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -169,6 +171,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -214,6 +217,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -259,6 +263,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -303,6 +308,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -310,6 +316,7 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
+
                         android:padding="12dp">
                         <ImageView
                             android:layout_width="24dp"
@@ -364,6 +371,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -408,6 +416,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -452,6 +461,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -497,6 +507,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -542,6 +553,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -586,6 +598,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -630,6 +643,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -674,6 +688,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -736,6 +751,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -782,6 +798,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout
@@ -826,6 +843,7 @@
                     android:layout_columnWeight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
+                    app:strokeColor="@color/white"
                     app:cardBackgroundColor="@android:color/transparent"
                     android:background="@drawable/glassy_bg_gradient">
                     <LinearLayout

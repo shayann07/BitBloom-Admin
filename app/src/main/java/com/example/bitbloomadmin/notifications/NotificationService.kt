@@ -43,12 +43,7 @@ class NotificationService : FirebaseMessagingService() {
         val title = message.data["title"] ?: "No Title"
         val body = message.data["body"] ?: "No Body"
 
-        // Save to local notification list
-        val newNotification = NotificationItem(title, body)
-        val sharedPrefManager = SharedPrefManager(applicationContext)
-        val currentList = sharedPrefManager.getNotifications().toMutableList()
-        currentList.add(0, newNotification)
-        sharedPrefManager.saveNotifications(currentList)
+
 
         // Create intent for notification click
         val intent = Intent(this, MainActivity::class.java).apply {
