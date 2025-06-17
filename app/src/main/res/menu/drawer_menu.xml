@@ -24,7 +24,13 @@
         android:title="Withdrawals" />
     <item
         android:id="@+id/nav_announcements"
-        android:icon="@drawable/withdraw"
+        android:icon="@drawable/ic_notification"
         android:title="Announcements" />
+    <item
+        android:id="@+id/nav_announcementsPoster"
+        android:icon="@drawable/announcement"
+        android:title="Poster Announcement"
+        android:iconTint="@color/white"
+        />
 
 </menu>

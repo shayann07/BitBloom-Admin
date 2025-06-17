@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_usersFragment"
             app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_addPosterFragment"
+            app:destination="@id/addPosterFragment" />
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
@@ -65,5 +68,10 @@
         android:name="com.example.bitbloomadmin.ui.AddPlanFragment"
         android:label="fragment_add_plan"
         tools:layout="@layout/fragment_add_plan"/>
+    <fragment
+        android:id="@+id/addPosterFragment"
+        android:name="com.example.bitbloomadmin.UI.AddPosterFragment"
+        android:label="fragment_add_poster"
+        tools:layout="@layout/fragment_add_poster" />
 
 </navigation>
