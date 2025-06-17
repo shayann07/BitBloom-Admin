@@ -40,17 +40,17 @@ open class BaseFragment : Fragment() {
 
         // 2) Inflate the overlay once and add it
         if (loadingOverlay == null) {
-           /* loadingOverlay = layoutInflater
+            loadingOverlay = layoutInflater
                 .inflate(R.layout.dialog_loading_overlay, container, false)
                 .apply { isClickable = true }
-            container.addView(loadingOverlay)*/
+            container.addView(loadingOverlay)
         }
     }
 
     /** Show the Lottie loading overlay */
     fun showLoading() = loadingOverlay?.let {
-       /* it.visibility = View.VISIBLE
-        it.bringToFront()*/
+        it.visibility = View.VISIBLE
+        it.bringToFront()
     }
 
     /** Hide the Lottie loading overlay */

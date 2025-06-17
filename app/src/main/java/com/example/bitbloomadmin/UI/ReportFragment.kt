@@ -65,8 +65,18 @@ class ReportFragment : BaseFragment() {
 
         // Show loader until first batch of data binds
         showLoading()
+        var isFirstLoaded = false
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.totalUsers.collect {
+                        tvTotalUsers.text = it.toString()
+                        if (!isFirstLoaded) {
+                            isFirstLoaded = true
+                            hideLoading()
+                        }
+                    }
+                }
                 launch { viewModel.totalUsers.collect     { tvTotalUsers.text     = it.toString() } }
                 launch { viewModel.activeUsers.collect    { tvActiveUsers.text    = it.toString() } }
                 launch { viewModel.inactiveUsers.collect  { tvInactiveUsers.text  = it.toString() } }
@@ -85,7 +95,7 @@ class ReportFragment : BaseFragment() {
                 launch { viewModel.totalReferralEarnings.collect { tvReferralEarnings.text = String.format("%.2f", it) } }
                 launch { viewModel.totalTeamEarnings.collect   { tvTeamEarnings.text = String.format("%.2f", it) } }
             }
-            hideLoading()
+
         }
 
         // Filter button
