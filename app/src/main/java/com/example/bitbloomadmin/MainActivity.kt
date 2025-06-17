@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_reports         -> navController.navigate(R.id.reportFragment)
                 R.id.nav_withdrawals     -> navController.navigate(R.id.withdrawFragment)
                 R.id.nav_announcements   -> navController.navigate(R.id.annoucementFragment)
+                R.id.nav_announcementsPoster      -> navController.navigate(R.id.addPosterFragment)
             }
             true
         }
