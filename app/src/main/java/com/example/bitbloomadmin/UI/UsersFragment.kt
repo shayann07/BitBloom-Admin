@@ -27,6 +27,8 @@ class UsersFragment : BaseFragment() {
 
     private lateinit var adapter: UserListAdapter
     private lateinit var viewModel: UserViewModel
+    private var allUsers: List<UserWithAccount> = emptyList()
+    private var filteredUsers: List<UserWithAccount> = emptyList()
 
     // flag to end loading only once
     private var isUsersLoaded = false
@@ -82,13 +84,37 @@ class UsersFragment : BaseFragment() {
         showLoading()
         lifecycleScope.launch {
             viewModel.usersWithAccounts.collect { userList ->
-                adapter.updateData(userList)
+                allUsers = userList
+                filteredUsers = userList
+                adapter.updateData(filteredUsers)
+
                 if (!isUsersLoaded && userList.isNotEmpty()) {
                     isUsersLoaded = true
                     hideLoading()
                 }
             }
         }
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return onQueryTextChange(query)
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val q = newText.orEmpty().trim()
+                filteredUsers = if (q.isEmpty()) {
+                    allUsers
+                } else {
+                    allUsers.filter {
+                        it.name.contains(q, ignoreCase = true) ||
+                                it.email.contains(q, ignoreCase = true) ||
+                                it.phone.contains(q, ignoreCase = true) || it.userId.contains(q, ignoreCase = true)
+                    }
+                }
+                adapter.updateData(filteredUsers)
+                return true
+            }
+        })
+
 
         // 2) Trigger Firestore sync in the background:
         //    because `syncFromFirebase()` now upserts, Room already has data from previous runs.
