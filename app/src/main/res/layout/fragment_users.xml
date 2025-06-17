@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/app_gradient"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/app_gradient">
+
+    <!-- Top Toolbar and Search -->
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="vertical">
+
+        <!-- Top Bar -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -40,18 +44,26 @@
                 android:src="@drawable/ic_notification" />
         </RelativeLayout>
 
+        <!-- ← NEW: SearchView for filtering -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            style="@style/Widget.AppCompat.SearchView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/edittext_bg"
+            android:queryHint="Search Users"
+            android:iconifiedByDefault="true"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
-
-
-
-
 
     <!-- RecyclerView for user list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerUserList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
-       />
+        android:layout_height="match_parent"
+        android:layout_marginTop="132dp"
+        android:padding="8dp"
+        android:clipToPadding="false" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

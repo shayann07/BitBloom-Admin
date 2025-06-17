@@ -15,13 +15,12 @@ class SharedPrefManager(context: Context) {
     private val editor: SharedPreferences.Editor = sharedPref.edit()
     private val gson = Gson()
 
-    fun saveId(id: String) {
-        editor.putString("userId", id)
-        editor.apply()
+    fun setLoggedIn(isLoggedIn: Boolean) {
+        editor.putBoolean("isLoggedIn", isLoggedIn).apply()
     }
-    fun saveUserName(name: String) {
-        editor.putString("userName", name)
-        editor.apply()
+
+    fun isLoggedIn(): Boolean {
+        return sharedPref.getBoolean("isLoggedIn", false)
     }
 
     fun saveUserEmail(email: String) {
@@ -47,16 +46,6 @@ class SharedPrefManager(context: Context) {
     }
 
 
-    fun saveNotifications(list: List<NotificationItem>) {
-        val json = gson.toJson(list)
-        editor.putString("notification_list", json)
-        editor.apply()
-    }
 
-    fun getNotifications(): List<NotificationItem> {
-        val json = sharedPref.getString("notification_list", null)
-        val type = object : TypeToken<List<NotificationItem>>() {}.type
-        return gson.fromJson(json, type) ?: emptyList()
-    }
 
 }

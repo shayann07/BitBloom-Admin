@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bitbloomadmin.databinding.ActivityLoginBinding
+import com.example.bitbloomadmin.utils.SharedPrefManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
@@ -101,6 +102,8 @@ class LoginActivity : AppCompatActivity() {
                                     )
                                     docRef.update(updates)
                                         .addOnSuccessListener {
+                                            SharedPrefManager(this).setLoggedIn(true)
+
                                             showMessage("Login successful!")
                                             startActivity(Intent(this, MainActivity::class.java))
                                             finish()

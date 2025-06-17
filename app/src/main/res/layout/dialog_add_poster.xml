@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/glassy_bg_gradient"
+    android:background="@drawable/glassy_drawer_bg"
     android:padding="16dp">
 
     <!-- Preview: shows the picked image if any -->

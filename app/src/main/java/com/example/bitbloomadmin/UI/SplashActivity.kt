@@ -14,6 +14,7 @@ import com.example.bitbloomadmin.Repository.UserRepository
 import com.example.bitbloomadmin.Viewmodel.UserViewModel
 import com.example.bitbloomadmin.Viewmodel.UserViewModelFactory
 import com.example.bitbloomadmin.databinding.ActivitySplashBinding
+import com.example.bitbloomadmin.utils.SharedPrefManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -34,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
         val repository = UserRepository(FirebaseHelper(this), dao)
         val factory = UserViewModelFactory(repository)
         val sharedPreferences = getSharedPreferences("MyPref", MODE_PRIVATE)
-        val stationId = sharedPreferences.getString("adminId", null)
+        val isLoggedIn = SharedPrefManager(this).isLoggedIn()
         viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
 
         // Fetch and sync data from Firebase to Room
@@ -42,13 +43,12 @@ class SplashActivity : AppCompatActivity() {
             viewModel.syncNow() // suspend function from UserViewModel
             delay(1500) // Give user time to see the logo + loading animation
             // Proceed to actual app screen (e.g., MainActivity)
-            if (stationId == null) {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                finish()
-            } else {
+            if (isLoggedIn) {
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
+            } else {
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             }
+            finish()
         }
     }
 }
