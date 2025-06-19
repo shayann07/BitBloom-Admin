@@ -6,6 +6,7 @@ data class PlanModel(
     val durationDays: Int = 0,
     val percentage: Double = 0.0,
     val directProfit: Double = 0.0,
+    val bonusPercentage: Double = 0.0,
     val updatedAt: Any? = null
 ) {
     fun toMap(): Map<String, Any?> {
@@ -15,6 +16,7 @@ data class PlanModel(
             "durationDays" to durationDays,
             "percentage" to percentage,
             "directProfit" to directProfit,
+            "bonusPercentage" to bonusPercentage,
             "updatedAt" to updatedAt
         )
     }
