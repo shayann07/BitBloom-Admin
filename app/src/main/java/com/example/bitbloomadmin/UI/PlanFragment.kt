@@ -79,6 +79,7 @@ class PlanFragment : BaseFragment() {
                             putInt("durationDays", plan.durationDays)
                             putDouble("dailyPercent", plan.percentage)
                             putDouble("directProfit", plan.directProfit)
+                            putDouble("bonus", plan.bonusPercentage)
                         }
                         findNavController().navigate(
                             R.id.addPlanFragment,

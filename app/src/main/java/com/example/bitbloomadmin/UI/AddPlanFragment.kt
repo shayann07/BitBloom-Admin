@@ -30,6 +30,7 @@ class AddPlanFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupDrawerTrigger(view)
 
+        hideLoading()
         // Obtain ViewModel
         val repo    = PlanRepository(FirebaseHelper(requireContext()))
         val factory = PlanViewModelFactory(repo)
@@ -41,6 +42,7 @@ class AddPlanFragment : BaseFragment() {
         val etDur      = view.findViewById<TextInputEditText>(R.id.etDurationDays)
         val etDaily    = view.findViewById<TextInputEditText>(R.id.etDailyPercentage)
         val etDirect   = view.findViewById<TextInputEditText>(R.id.etDirectProfit)
+        val etBonus    = view.findViewById<TextInputEditText>(R.id.etBonus)
         val btnConfirm = view.findViewById<MaterialButton>(R.id.btnConfirmOrUpdate)
 
         // Detect edit mode
@@ -52,6 +54,7 @@ class AddPlanFragment : BaseFragment() {
                 etDur.setText(args.getInt("durationDays", 0).toString())
                 etDaily.setText(args.getDouble("dailyPercent", 0.0).toString())
                 etDirect.setText(args.getDouble("directProfit", 0.0).toString())
+                etBonus.setText(args.getDouble("bonus", 0.0).toString())
                 btnConfirm.text = "Update Plan"
             }
         }
@@ -62,11 +65,12 @@ class AddPlanFragment : BaseFragment() {
                 minInvestment = etMin.text.toString().toDoubleOrNull() ?: 0.0,
                 durationDays  = etDur.text.toString().toIntOrNull() ?: 0,
                 percentage    = etDaily.text.toString().toDoubleOrNull() ?: 0.0,
-                directProfit  = etDirect.text.toString().toDoubleOrNull() ?: 0.0
+                directProfit  = etDirect.text.toString().toDoubleOrNull() ?: 0.0,
+                bonusPercentage = etBonus.text.toString().toDoubleOrNull() ?: 0.0
             )
 
-            /*// Show loader around network call
-            showLoading()*/
+            // Show loader around network call
+            showLoading()
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     if (isEditMode) viewModel.updatePlan(plan)
