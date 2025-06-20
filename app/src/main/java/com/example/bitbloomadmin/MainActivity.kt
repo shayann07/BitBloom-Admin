@@ -1,5 +1,9 @@
 package com.example.bitbloomadmin
 
+// WorkManager imports (must be these exact packages):
+
+// Your SyncWorker (ensure package matches where you placed it):
+
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,22 +11,17 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.bitbloomadmin.databinding.ActivityMainBinding
-import com.google.firebase.FirebaseApp
-
-// WorkManager imports (must be these exact packages):
-import androidx.work.Constraints
-import androidx.work.NetworkType
 import androidx.work.BackoffPolicy
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.ExistingPeriodicWorkPolicy
-
-// Your SyncWorker (ensure package matches where you placed it):
+import com.example.bitbloomadmin.databinding.ActivityMainBinding
 import com.example.bitbloomadmin.workers.SyncWorker
-
-import java.util.concurrent.TimeUnit
+import com.google.firebase.FirebaseApp
 import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -49,12 +48,12 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavBar.setupWithNavController(navController)
         binding.bottomNavBar.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_dashboard    -> navController.navigate(R.id.dashboardFragment)
-                R.id.nav_users        -> navController.navigate(R.id.usersFragment)
-                R.id.nav_plans        -> navController.navigate(R.id.planFragment)
-                R.id.nav_reports      -> navController.navigate(R.id.reportFragment)
-                R.id.nav_withdrawals  -> navController.navigate(R.id.withdrawFragment)
-                else                  -> false
+                R.id.nav_dashboard -> navController.navigate(R.id.dashboardFragment)
+                R.id.nav_users -> navController.navigate(R.id.usersFragment)
+                R.id.nav_plans -> navController.navigate(R.id.planFragment)
+                R.id.nav_reports -> navController.navigate(R.id.reportFragment)
+                R.id.nav_withdrawals -> navController.navigate(R.id.withdrawFragment)
+                else -> false
             }
             true
         }
@@ -73,13 +72,14 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             when (menuItem.itemId) {
-                R.id.nav_dashboard       -> navController.navigate(R.id.dashboardFragment)
-                R.id.nav_users           -> navController.navigate(R.id.usersFragment)
-                R.id.nav_plans           -> navController.navigate(R.id.planFragment)
-                R.id.nav_reports         -> navController.navigate(R.id.reportFragment)
-                R.id.nav_withdrawals     -> navController.navigate(R.id.withdrawFragment)
-                R.id.nav_announcements   -> navController.navigate(R.id.annoucementFragment)
-                R.id.nav_announcementsPoster      -> navController.navigate(R.id.addPosterFragment)
+                R.id.nav_dashboard -> navController.navigate(R.id.dashboardFragment)
+                R.id.nav_users -> navController.navigate(R.id.usersFragment)
+                R.id.nav_plans -> navController.navigate(R.id.planFragment)
+                R.id.nav_reports -> navController.navigate(R.id.reportFragment)
+                R.id.nav_withdrawals -> navController.navigate(R.id.withdrawFragment)
+                R.id.nav_announcements -> navController.navigate(R.id.annoucementFragment)
+                R.id.nav_announcementsPoster -> navController.navigate(R.id.addPosterFragment)
+                R.id.nav_support -> navController.navigate(R.id.supportFragment)
             }
             true
         }
@@ -113,6 +113,7 @@ class MainActivity : AppCompatActivity() {
                 syncRequest
             )
     }
+
     /**
      * Compute milliseconds until the next occurrence of [hour:minute] local time.
      * If it's already past that time today, schedule for tomorrow.

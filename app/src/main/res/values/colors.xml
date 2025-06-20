@@ -25,6 +25,8 @@
     <!-- Text & icons -->
     <color name="textPrimary">#FFFFFF</color>
     <color name="textSecondary">#BBBBBB</color>
+    <color name="ticket_pending">#FFC107</color>  <!-- amber / warning -->
+    <color name="ticket_closed">#4CAF50</color>   <!-- material green 500 -->
     <color name="iconTintActive">#FFFFFF</color>
     <color name="iconTintInactive">#888888</color>
 </resources>
