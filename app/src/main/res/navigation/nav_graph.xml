@@ -39,7 +39,7 @@
         android:id="@+id/planFragment"
         android:name="com.example.bitbloomadmin.ui.PlanFragment"
         android:label="fragment_plan"
-        tools:layout="@layout/fragment_plan" >
+        tools:layout="@layout/fragment_plan">
         <action
             android:id="@+id/action_planFragment_to_addPlanFragment"
             app:destination="@id/addPlanFragment" />
@@ -67,11 +67,70 @@
         android:id="@+id/addPlanFragment"
         android:name="com.example.bitbloomadmin.ui.AddPlanFragment"
         android:label="fragment_add_plan"
-        tools:layout="@layout/fragment_add_plan"/>
+        tools:layout="@layout/fragment_add_plan" />
     <fragment
         android:id="@+id/addPosterFragment"
         android:name="com.example.bitbloomadmin.UI.AddPosterFragment"
         android:label="fragment_add_poster"
         tools:layout="@layout/fragment_add_poster" />
+
+    <!-- Pending list -->
+    <fragment
+        android:id="@+id/pendingTicketsFragment"
+        android:name="com.example.bitbloomadmin.UI.PendingFragment"
+        android:label="Pending"
+        tools:layout="@layout/fragment_pending">
+
+        <action
+            android:id="@+id/action_to_ticketDetails"
+            app:destination="@id/ticketDetailsFragment" />
+    </fragment>
+
+    <!-- Closed list -->
+    <fragment
+        android:id="@+id/closedTicketsFragment"
+        android:name="com.example.bitbloomadmin.UI.ClosedFragment"
+        android:label="Closed"
+        tools:layout="@layout/fragment_closed">
+
+        <action
+            android:id="@+id/action_to_ticketDetails"
+            app:destination="@id/ticketDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/answeredTicketsFragment"
+        android:name="com.example.bitbloomadmin.UI.AnsweredFragment"
+        android:label="Answered"
+        tools:layout="@layout/fragment_answered">
+
+        <action
+            android:id="@+id/action_to_ticketDetails"
+            app:destination="@id/ticketDetailsFragment" />
+    </fragment>
+
+    <!-- All list -->
+    <fragment
+        android:id="@+id/allTicketsFragment"
+        android:name="com.example.bitbloomadmin.UI.AllFragment"
+        android:label="All"
+        tools:layout="@layout/fragment_all">
+
+        <action
+            android:id="@+id/action_to_ticketDetails"
+            app:destination="@id/ticketDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ticketDetailsFragment"
+        android:name="com.example.bitbloomadmin.UI.TicketDetailsFragment"
+        android:label="fragment_ticket_details"
+        tools:layout="@layout/fragment_ticket_details" />
+
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.example.bitbloomadmin.UI.SupportFragment"
+        android:label="fragment_support"
+        tools:layout="@layout/fragment_support" />
 
 </navigation>

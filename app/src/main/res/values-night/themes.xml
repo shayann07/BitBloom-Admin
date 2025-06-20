@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.BitBloomAdmin" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -50,8 +50,26 @@
         <item name="android:textColor">@color/textPrimary</item>
     </style>
 
+    <style name="NoActiveIndicator" parent="@style/Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+        <item name="android:height">0dp</item>
+        <item name="android:width">0dp</item>
+    </style>
+
+    <style name="Widget.BitBloomAdmin.TextInput.Auth" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxStrokeColor">@color/text_input_stroke</item>
+        <item name="hintTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
     <style name="TextAppearance.BitBloomAdmin.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@color/textSecondary</item>
     </style>
+
+    <style name="Theme.BitBloomAdmin" parent="Base.Theme.BitBloomAdmin" />
 
 </resources>
