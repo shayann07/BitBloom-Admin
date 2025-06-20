@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,8 +12,9 @@ import com.example.bitbloomadmin.R
 import com.example.bitbloomadmin.Viewmodel.AdminSupportVMFactory
 import com.example.bitbloomadmin.Viewmodel.AdminSupportViewModel
 import com.example.bitbloomadmin.databinding.FragmentSupportBinding
+import com.example.bitbloomadmin.ui.BaseFragment
 
-class SupportFragment : Fragment() {
+class SupportFragment : BaseFragment() {
 
     private var _b: FragmentSupportBinding? = null
     private val b get() = _b!!
@@ -30,6 +30,7 @@ class SupportFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)      // <- keep base call
+        setupDrawerTrigger(view)
 
         with(b) {
             pendingCard.setOnClickListener(nav(R.id.pendingTicketsFragment))

@@ -13,10 +13,11 @@ import com.example.bitbloomadmin.Viewmodel.AdminSupportVMFactory
 import com.example.bitbloomadmin.Viewmodel.AdminSupportViewModel
 import com.example.bitbloomadmin.databinding.FragmentTicketDetailsBinding
 import com.example.bitbloomadmin.models.SupportTicket
+import com.example.bitbloomadmin.ui.BaseFragment
 import com.example.bitbloomadmin.utils.TicketStatus
 import com.google.android.material.textfield.TextInputEditText
 
-class TicketDetailsFragment : Fragment() {
+class TicketDetailsFragment : BaseFragment() {
 
     private var _b: FragmentTicketDetailsBinding? = null
     private val b get() = _b!!
@@ -30,6 +31,7 @@ class TicketDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupDrawerTrigger(view)
 
         val id = requireArguments().getString("ticketId")!!
 

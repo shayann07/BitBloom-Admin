@@ -18,9 +18,10 @@ import com.example.bitbloomadmin.Viewmodel.AdminSupportViewModel
 import com.example.bitbloomadmin.adapter.TicketAdapter
 import com.example.bitbloomadmin.databinding.FragmentPendingBinding
 import com.example.bitbloomadmin.models.SupportTicket
+import com.example.bitbloomadmin.ui.BaseFragment
 import com.example.bitbloomadmin.utils.TicketStatus
 
-abstract class TicketListFragment : Fragment() {
+abstract class TicketListFragment : BaseFragment() {
 
     abstract val filter: (SupportTicket) -> Boolean
     abstract val screenTitle: String
@@ -40,6 +41,7 @@ abstract class TicketListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupDrawerTrigger(view)
 
         b.tvTickets.text = screenTitle
 
