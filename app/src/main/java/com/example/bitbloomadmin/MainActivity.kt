@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_announcements -> navController.navigate(R.id.annoucementFragment)
                 R.id.nav_announcementsPoster -> navController.navigate(R.id.addPosterFragment)
                 R.id.nav_support -> navController.navigate(R.id.supportFragment)
+                R.id.top_leaders -> navController.navigate(R.id.topLeadersFragment)
             }
             true
         }

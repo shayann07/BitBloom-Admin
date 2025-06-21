@@ -117,10 +117,10 @@ dependencies {
     implementation(libs.grpc.core)
     implementation(libs.grpc.stub)
     implementation(libs.grpc.protobuf.lite)
-   implementation ("androidx.core:core-splashscreen:1.0.1")
-    implementation ("com.google.android.material:material:1.11.0")
-    implementation ("com.google.code.gson:gson:2.10.1")
-    implementation( "androidx.work:work-runtime-ktx:2.10.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.4")
-
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.1")
 }

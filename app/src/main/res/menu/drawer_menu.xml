@@ -37,4 +37,9 @@
         android:icon="@drawable/ticket"
         android:title="Support" />
 
+    <item
+        android:id="@+id/top_leaders"
+        android:icon="@drawable/ic_filter_list"
+        android:title="Top Leaders" />
+
 </menu>

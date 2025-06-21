@@ -4,9 +4,11 @@ package com.example.bitbloomadmin.UI
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.bitbloomadmin.Repository.SupportTicketRepository
 import com.example.bitbloomadmin.Viewmodel.AdminSupportVMFactory
@@ -32,6 +34,7 @@ class TicketDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupDrawerTrigger(view)
+        showLoading()
 
         val id = requireArguments().getString("ticketId")!!
 
@@ -39,7 +42,10 @@ class TicketDetailsFragment : BaseFragment() {
         SupportTicketRepository.getInstance()
             .ticketsCollection().document(id)
             .addSnapshotListener { snap, _ ->
-                snap?.toObject(SupportTicket::class.java)?.let { bind(it) }
+                snap?.toObject(SupportTicket::class.java)?.let {
+                    bind(it)
+                    hideLoading()
+                }
             }
 
         // —— submit reply ——
@@ -54,6 +60,7 @@ class TicketDetailsFragment : BaseFragment() {
 
     private fun bind(t: SupportTicket) = with(b) {
         etUserID.setText(t.userId)
+        etPhone.setText(t.phone)
         etEmail.setText(t.email)
         etTicketStatus.setText(t.status.replaceFirstChar { it.uppercase() })
         etSubject.setText(t.subject)
