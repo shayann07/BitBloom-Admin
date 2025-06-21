@@ -5,126 +5,121 @@
     android:layout_height="match_parent"
     android:background="@drawable/app_gradient">
 
-    <ScrollView
+    <!-- Content container -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- Content container -->
+        <!-- Top bar -->
+        <RelativeLayout
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/menuIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_menu" />
+
+            <TextView
+                android:id="@+id/profileTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Top Leaders"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/notificationIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <!-- Top bar -->
-            <RelativeLayout
-                android:id="@+id/topbar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:padding="16dp">
-
-                <ImageView
-                    android:id="@+id/menuIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentStart="true"
-                    android:src="@drawable/ic_menu" />
-
-                <TextView
-                    android:id="@+id/profileTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Top Leaders"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/notificationIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true" />
-
-            </RelativeLayout>
-
-            <LinearLayout
+            <!-- Select Setup -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.BitBloomAdmin.TextInput.Auth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:layout_marginBottom="14dp"
+                android:hint="User ID"
+                app:endIconMode="custom">
 
-                <!-- Select Setup -->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.BitBloomAdmin.TextInput.Auth"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUserID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:hint="User ID"
-                    app:endIconMode="custom">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etUserID"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#CCFFFFFF" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Select Setup -->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.BitBloomAdmin.TextInput.Auth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:hint="Rank"
-                    app:endIconMode="custom">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etRank"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#CCFFFFFF" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Select Setup -->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.BitBloomAdmin.TextInput.Auth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:hint="Total Business"
-                    app:endIconMode="custom">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etTotalBusiness"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="#CCFFFFFF" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Fixed bottom button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnUpdate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="24dp"
-                    android:minWidth="150dp"
-                    android:text="Update"
                     android:textColor="@android:color/white"
-                    app:backgroundTint="@color/light_blue"
-                    app:cornerRadius="20dp" />
+                    android:textColorHint="#CCFFFFFF" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvLeaders"
+            <!-- Select Setup -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.BitBloomAdmin.TextInput.Auth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:hint="Rank"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etRank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="6dp"
-                    android:nestedScrollingEnabled="false" />
-            </LinearLayout>
+                    android:textColor="@android:color/white"
+                    android:textColorHint="#CCFFFFFF" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Select Setup -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.BitBloomAdmin.TextInput.Auth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:hint="Total Business"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTotalBusiness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="#CCFFFFFF" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Fixed bottom button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:minWidth="150dp"
+                android:text="Update"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/light_blue"
+                app:cornerRadius="20dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLeaders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:nestedScrollingEnabled="false" />
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
