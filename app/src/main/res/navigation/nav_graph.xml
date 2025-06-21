@@ -133,4 +133,10 @@
         android:label="fragment_support"
         tools:layout="@layout/fragment_support" />
 
+    <fragment
+        android:id="@+id/topLeadersFragment"
+        android:name="com.example.bitbloomadmin.UI.TopLeadersFragment"
+        android:label="fragment_top_leaders"
+        tools:layout="@layout/fragment_top_leaders" />
+
 </navigation>

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -53,9 +52,15 @@ abstract class TicketListFragment : BaseFragment() {
         }
         b.rvTickets.layoutManager = LinearLayoutManager(requireContext())
         b.rvTickets.adapter = adapter
+        showLoading()
 
+        var first = true
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             vm.all.collect { list ->
+                if (first) {
+                    hideLoading()
+                    first = false
+                }
                 val shown = list.filter(filter)
                 adapter.submitList(shown)
                 b.rvTickets.isVisible = shown.isNotEmpty()

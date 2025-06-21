@@ -31,6 +31,7 @@ class SupportFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)      // <- keep base call
         setupDrawerTrigger(view)
+        showLoading()
 
         with(b) {
             pendingCard.setOnClickListener(nav(R.id.pendingTicketsFragment))
@@ -48,7 +49,10 @@ class SupportFragment : BaseFragment() {
                 vm.answeredCount.collect { answeredAmount.text = it.toString() }
             }
             lifecycleScope.launchWhenStarted {
-                vm.all.collect { allAmount.text = it.size.toString() }
+                vm.all.collect {
+                    allAmount.text = it.size.toString()
+                    hideLoading()
+                }
             }
         }
     }
