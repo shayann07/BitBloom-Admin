@@ -61,6 +61,7 @@ class TopLeadersFragment : BaseFragment() {
             }
         }
         rv.adapter = adapter
+        hideLoading()
 
         // 2) “Update” button logic (unchanged)
         btnUpdate.setOnClickListener {
