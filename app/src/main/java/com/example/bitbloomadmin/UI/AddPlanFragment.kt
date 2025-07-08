@@ -1,4 +1,4 @@
-package com.example.bitbloomadmin.ui
+package com.example.bitbloomadmin.UI
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import com.example.bitbloomadmin.Factories.PlanViewModelFactory
 import com.example.bitbloomadmin.Repository.PlanRepository
 import com.example.bitbloomadmin.Viewmodel.PlanViewModel
 import com.example.bitbloomadmin.models.PlanModel
+import com.example.bitbloomadmin.ui.BaseFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
@@ -50,6 +51,14 @@ class AddPlanFragment : BaseFragment() {
             isEditMode = args.getBoolean("isEdit", false)
             if (isEditMode) {
                 etName.setText(args.getString("planName", ""))
+
+                // 🔒 make name un-editable in edit mode
+                etName.isEnabled       = false
+                etName.isFocusable     = false
+                etName.isCursorVisible = false
+                // (optional) grey-out the background – depends on your style
+                // etName.setTextColor(ContextCompat.getColor(requireContext(), R.color.md_grey_600))
+
                 etMin.setText(args.getDouble("minInvestment", 0.0).toString())
                 etDur.setText(args.getInt("durationDays", 0).toString())
                 etDaily.setText(args.getDouble("dailyPercent", 0.0).toString())

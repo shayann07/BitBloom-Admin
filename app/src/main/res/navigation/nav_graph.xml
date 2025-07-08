@@ -65,7 +65,7 @@
         tools:layout="@layout/fragment_user_profile" />
     <fragment
         android:id="@+id/addPlanFragment"
-        android:name="com.example.bitbloomadmin.ui.AddPlanFragment"
+        android:name="com.example.bitbloomadmin.UI.AddPlanFragment"
         android:label="fragment_add_plan"
         tools:layout="@layout/fragment_add_plan" />
     <fragment
