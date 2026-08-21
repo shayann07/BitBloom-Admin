@@ -86,3 +86,5 @@ Build on macOS or Linux:
 - Room uses destructive migration fallback and the sync worker replaces local tables from Firestore.
 - Automated coverage is limited to generated example tests.
 - No license file is present.
+
+<!-- gitpulse:contribution index="1" timestamp="2026-08-22" -->
