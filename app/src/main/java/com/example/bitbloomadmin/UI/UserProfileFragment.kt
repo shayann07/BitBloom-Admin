@@ -36,7 +36,7 @@ class UserProfileFragment : BaseFragment() {
             tvDeposit.text         = String.format("%.2f", args.getDouble("totalDeposit", 0.0))
             tvProfit.text          = String.format("%.2f", args.getDouble("totalEarned", 0.0))
             tvReferral.text        = args.getString("referalCode", "N/A")
-            tvPassword.text        = args.getString("password", "••••••")
+            tvPassword.text        = "••••••"
             tvLifetimeReferral.text= String.format("%.2f", args.getDouble("lifetime_referral_income", 0.0))
             tvLifetimeRoi.text     = String.format("%.2f", args.getDouble("lifetime_roi_income", 0.0))
             tvLifetimeTeam.text    = String.format("%.2f", args.getDouble("lifetime_team_income", 0.0))

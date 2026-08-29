@@ -28,7 +28,7 @@ class AccessToken {
                {
   "type": "service_account",
   "project_id": "investment-app-11ac4",
-  "private_key_id": "f6c072068c8228d3049b0d506badccae3798cef9",
+  "private_key_id": "YOUR_PRIVATE_KEY_ID",
   "private_key": "YOUR_PRIVATE_KEY",
   "client_email": "firebase-adminsdk-fbsvc@investment-app-11ac4.iam.gserviceaccount.com",
   "client_id": "116086274382549132254",
