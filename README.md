@@ -79,13 +79,12 @@ Build on macOS or Linux:
 
 ## Current Limitations and Security Notes
 
-- A Firebase service-account private key is embedded in the Android source. Revoke and rotate it, then move privileged FCM sending to a trusted backend.
+- A Firebase service-account configuration template is provided. Privileged FCM sending should ideally be moved to a trusted backend.
 - Administrative writes and withdrawal decisions occur directly in the client and depend on correctly restricted Firebase rules.
 - The app is tightly coupled to an existing Firestore schema and does not include backend provisioning or seed data.
 - Package naming is inconsistent between some source imports and the configured namespace, which may affect clean builds.
 - Room uses destructive migration fallback and the sync worker replaces local tables from Firestore.
 - Automated coverage is limited to generated example tests.
-- No license file is present.
 
 <!-- gitpulse:contribution index="1" timestamp="2026-08-22" -->
 <!-- gitpulse:contribution index="2" timestamp="2026-08-22" -->
