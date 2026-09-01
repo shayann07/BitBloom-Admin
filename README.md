@@ -175,3 +175,5 @@ sequenceDiagram
 ## 📄 License
 
 This project is open-source software licensed under the [MIT License](LICENSE) — Copyright (c) 2026 [shayann07](https://github.com/shayann07).
+
+<!-- gitpulse:contribution index="1" timestamp="2026-09-02" -->
